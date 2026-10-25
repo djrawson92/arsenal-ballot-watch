@@ -1,1 +1,81 @@
-{}
+{
+  "failStreak": 0,
+  "ballots": {
+    "11412": {
+      "firstSeen": "2026-10-25",
+      "sent": [],
+      "id": "11412",
+      "title": "Arsenal v Hull City",
+      "kickoff": "2026-11-07T15:00",
+      "status": "closed",
+      "opens": "2026-09-18T11:00",
+      "closes": "2026-09-21T11:00",
+      "link": "https://www.eticketing.co.uk/arsenal/Events?preFilter=85&preFilterName=Ballot%20Registrations",
+      "phase": "closed"
+    },
+    "11426": {
+      "firstSeen": "2026-10-25",
+      "sent": [],
+      "id": "11426",
+      "title": "Arsenal v Manchester City",
+      "kickoff": "2026-11-29T16:30",
+      "status": "closed",
+      "opens": "2026-10-02T11:00",
+      "closes": "2026-10-05T11:00",
+      "link": "https://www.eticketing.co.uk/arsenal",
+      "phase": "closed"
+    },
+    "11429": {
+      "firstSeen": "2026-10-25",
+      "sent": [],
+      "id": "11429",
+      "title": "Arsenal v Bournemouth",
+      "kickoff": "2026-12-13T14:00",
+      "status": "closed",
+      "opens": "2026-10-16T11:00",
+      "closes": "2026-10-19T11:00",
+      "link": "https://www.eticketing.co.uk/arsenal/",
+      "phase": "closed"
+    },
+    "11452": {
+      "firstSeen": "2026-10-25",
+      "sent": [
+        "open"
+      ],
+      "id": "11452",
+      "title": "Arsenal v Manchester United",
+      "kickoff": "2026-12-20T16:30",
+      "status": "open",
+      "opens": "2026-10-23T11:00",
+      "closes": "2026-10-26T12:00",
+      "link": "https://www.eticketing.co.uk/arsenal/",
+      "phase": "open"
+    },
+    "11589": {
+      "firstSeen": "2026-10-25",
+      "sent": [],
+      "id": "11589",
+      "title": "Arsenal v Borussia Dortmund",
+      "kickoff": "2026-11-24T20:00",
+      "status": "closed",
+      "opens": "2026-09-25T11:00",
+      "closes": "2026-09-28T11:00",
+      "link": "https://www.eticketing.co.uk/arsenal/",
+      "phase": "closed"
+    },
+    "11590": {
+      "firstSeen": "2026-10-25",
+      "sent": [],
+      "id": "11590",
+      "title": "Arsenal v Real Madrid CF",
+      "kickoff": "2026-12-09T20:00",
+      "status": "closed",
+      "opens": "2026-10-09T11:00",
+      "closes": "2026-10-12T11:00",
+      "link": "https://www.eticketing.co.uk/arsenal/",
+      "phase": "closed"
+    }
+  },
+  "seeded": true,
+  "lastAlive": "2026-10-25"
+}
