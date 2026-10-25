@@ -1,0 +1,14 @@
+{
+  "name": "arsenal-ballot-watch",
+  "version": "1.0.0",
+  "description": "Alerts your phone when Arsenal announces or opens a ticket ballot.",
+  "scripts": {
+    "check": "node src/check.mjs",
+    "test": "node --test"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  }
+}

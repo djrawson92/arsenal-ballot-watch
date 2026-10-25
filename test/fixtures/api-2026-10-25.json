@@ -1,0 +1,179 @@
+{
+ "data": {
+  "getAllLatestLiveReports": {
+   "total": 5,
+   "data": [
+    {
+     "id": 11603,
+     "customTypeData": {
+      "fixtureDetails": {
+       "arsenalTeam": {
+        "slug": "men"
+       },
+       "fixtureDate": "2026-10-27T20:00",
+       "dateOverride": "2026-10-27T20:00",
+       "opponent": {
+        "name": "Fleetwood Town FC",
+        "clubName": "Fleetwood Town FC"
+       },
+       "venue": "Highbury Stadium",
+       "venueType1": "away"
+      },
+      "metaData": {
+       "fixtureTicketing": {
+        "ballot": "notAvailable",
+        "ballotLink": "https://www.eticketing.co.uk/arsenal/",
+        "ballotCloseDate": null,
+        "ballotOpenDate": null,
+        "onSaleDate": "2026-10-02T10:00",
+        "ticketLink": "https://www.eticketing.co.uk/arsenal/",
+        "gaTicket": "soldOut",
+        "ctaLabel": null,
+        "ctaLink": null
+       }
+      },
+      "fixtureConfig": {
+       "optaId": "44r1nzg6j1a8ospkl7u218rh0"
+      }
+     }
+    },
+    {
+     "id": 11478,
+     "customTypeData": {
+      "fixtureDetails": {
+       "arsenalTeam": {
+        "slug": "women"
+       },
+       "fixtureDate": "2026-11-01T12:00",
+       "dateOverride": "2026-11-01T12:00",
+       "opponent": {
+        "name": "Aston Villa Women",
+        "clubName": "Aston Villa Women"
+       },
+       "venue": "Emirates Stadium",
+       "venueType1": "home"
+      },
+      "metaData": {
+       "fixtureTicketing": {
+        "ballot": "notAvailable",
+        "ballotLink": null,
+        "ballotCloseDate": null,
+        "ballotOpenDate": null,
+        "onSaleDate": "2026-09-01T13:00",
+        "ticketLink": "https://www.eticketing.co.uk/arsenal/EDP/Event/Index/3979",
+        "gaTicket": "onSale",
+        "ctaLabel": null,
+        "ctaLink": null
+       }
+      },
+      "fixtureConfig": {
+       "optaId": "1fgwni2mye93q1o51nbgtjg9g"
+      }
+     }
+    },
+    {
+     "id": 11415,
+     "customTypeData": {
+      "fixtureDetails": {
+       "arsenalTeam": {
+        "slug": "men"
+       },
+       "fixtureDate": "2026-11-21T17:30",
+       "dateOverride": "2026-11-21T17:30",
+       "opponent": {
+        "name": "Newcastle United",
+        "clubName": "Newcastle"
+       },
+       "venue": "St. James' Park",
+       "venueType1": "away"
+      },
+      "metaData": {
+       "fixtureTicketing": {
+        "ballot": "notAvailable",
+        "ballotLink": null,
+        "ballotCloseDate": null,
+        "ballotOpenDate": null,
+        "onSaleDate": "2026-10-19T10:00",
+        "ticketLink": "https://www.eticketing.co.uk/arsenal/",
+        "gaTicket": "notAvailable",
+        "ctaLabel": null,
+        "ctaLink": null
+       }
+      },
+      "fixtureConfig": {
+       "optaId": "4xgd5lkdaorn0jxd9qsx1rqxg"
+      }
+     }
+    },
+    {
+     "id": 11426,
+     "customTypeData": {
+      "fixtureDetails": {
+       "arsenalTeam": {
+        "slug": "men"
+       },
+       "fixtureDate": "2026-11-29T16:30",
+       "dateOverride": "2026-11-29T16:30",
+       "opponent": {
+        "name": "Manchester City",
+        "clubName": "Man City"
+       },
+       "venue": "Emirates Stadium",
+       "venueType1": "home"
+      },
+      "metaData": {
+       "fixtureTicketing": {
+        "ballot": "closed",
+        "ballotLink": "https://www.eticketing.co.uk/arsenal",
+        "ballotCloseDate": "2026-10-05T11:00",
+        "ballotOpenDate": "2026-10-02T11:00",
+        "onSaleDate": null,
+        "ticketLink": "https://www.eticketing.co.uk/arsenal/",
+        "gaTicket": "notAvailable",
+        "ctaLabel": null,
+        "ctaLink": null
+       }
+      },
+      "fixtureConfig": {
+       "optaId": "4y511icl4rh1gdodgh8yfyuj8"
+      }
+     }
+    },
+    {
+     "id": 11452,
+     "customTypeData": {
+      "fixtureDetails": {
+       "arsenalTeam": {
+        "slug": "men"
+       },
+       "fixtureDate": "2026-12-20T16:30",
+       "dateOverride": "2026-12-20T16:30",
+       "opponent": {
+        "name": "Manchester United",
+        "clubName": "Man United"
+       },
+       "venue": "Emirates Stadium",
+       "venueType1": "home"
+      },
+      "metaData": {
+       "fixtureTicketing": {
+        "ballot": "open",
+        "ballotLink": "https://www.eticketing.co.uk/arsenal/",
+        "ballotCloseDate": "2026-10-26T12:00",
+        "ballotOpenDate": "2026-10-23T11:00",
+        "onSaleDate": null,
+        "ticketLink": "https://www.eticketing.co.uk/arsenal/",
+        "gaTicket": "notAvailable",
+        "ctaLabel": null,
+        "ctaLink": null
+       }
+      },
+      "fixtureConfig": {
+       "optaId": "5c8vms7il1p110lfq50eqts7o"
+      }
+     }
+    }
+   ]
+  }
+ }
+}

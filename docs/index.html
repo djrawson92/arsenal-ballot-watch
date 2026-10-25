@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arsenal Ballot Watch</title>
+<style>
+  :root {
+    --bg: #f6f6f4; --card: #fff; --text: #1b1b1b; --muted: #6b6b6b; --line: #e3e3e0;
+    --red: #db0007; --ok: #1e7a3c; --warn: #b25b00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #121212; --card: #1d1d1d; --text: #eee; --muted: #a0a0a0; --line: #2e2e2e;
+      --red: #ff4a50; --ok: #5ccf83; --warn: #f0a050; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  h1 span { color: var(--red); }
+  h2 { font-size: 1rem; margin: 28px 0 8px; color: var(--muted); font-weight: 600; }
+  .status { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-top: 16px; }
+  .status b.ok { color: var(--ok); } .status b.bad { color: var(--warn); }
+  .muted { color: var(--muted); font-size: .9rem; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--red);
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  li.closed { border-left-color: var(--line); opacity: .7; }
+  li a { color: inherit; font-weight: 600; text-decoration: none; }
+  li a:hover { text-decoration: underline; }
+  li p { margin: 4px 0 0; }
+  li.empty { color: var(--muted); background: none; border: 0; padding: 4px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1><span>Arsenal</span> Ballot Watch</h1>
+  <div class="muted">Ticket ballots from arsenal.com. You get a push when one is announced, when it opens and 12 hours before it closes.</div>
+  <div class="status" id="status">Loading…</div>
+  <h2>Open now</h2>
+  <ul id="open"><li class="empty">Loading…</li></ul>
+  <h2>Coming up</h2>
+  <ul id="upcoming"><li class="empty">Loading…</li></ul>
+  <h2>Closed</h2>
+  <ul id="closed"><li class="empty">Loading…</li></ul>
+</main>
+<script>
+  // On GitHub Pages the address is <owner>.github.io/<repo>/.
+  const owner = location.hostname.split('.')[0];
+  const repo = location.pathname.split('/').filter(Boolean)[0] || 'arsenal-ballot-watch';
+
+  const escape = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const safeUrl = (u) => (/^https?:\/\//.test(u) ? u : '#');
+  const ago = (iso) => {
+    const mins = Math.round((Date.now() - new Date(iso)) / 60000);
+    if (mins < 60) return `${mins} min ago`;
+    if (mins < 1440) return `${Math.round(mins / 60)} h ago`;
+    return `${Math.round(mins / 1440)} days ago`;
+  };
+
+  // API times are UK wall-clock times like "2026-10-23T11:00"; show them as written.
+  const uk = (s) => {
+    if (!s) return 'TBC';
+    const d = new Date(`${s}:00Z`);
+    return d.toLocaleString('en-GB', { timeZone: 'UTC', weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  };
+
+  function renderList(el, items) {
+    el.innerHTML = items.length
+      ? items.map((b) => `<li class="${b.phase === 'closed' ? 'closed' : ''}"><a href="${escape(safeUrl(b.link))}">${escape(b.title)}</a>
+          <p>Ballot ${escape(uk(b.opens))} → ${escape(uk(b.closes))}</p><div class="muted">Kick-off ${escape(uk(b.kickoff))}</div></li>`).join('')
+      : '<li class="empty">None</li>';
+  }
+
+  async function load() {
+    try {
+      const state = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/state.json?t=${Date.now()}`).then((r) => r.json());
+      const all = Object.values(state.ballots ?? {}).sort((a, b) => (a.kickoff ?? '').localeCompare(b.kickoff ?? ''));
+      for (const phase of ['open', 'upcoming', 'closed']) {
+        renderList(document.getElementById(phase), all.filter((b) => b.phase === phase));
+      }
+    } catch {
+      document.getElementById('open').innerHTML = '<li class="empty">Couldn’t load the list.</li>';
+      document.getElementById('upcoming').innerHTML = document.getElementById('closed').innerHTML = '';
+    }
+
+    const status = document.getElementById('status');
+    try {
+      const { workflow_runs: [run] } = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/actions/workflows/check.yml/runs?per_page=1`,
+      ).then((r) => r.json());
+      if (!run) throw new Error();
+      const good = run.conclusion === 'success';
+      const label = run.status !== 'completed' ? 'Checking now…' : good ? 'Working' : 'Last check failed';
+      status.innerHTML = `<b class="${good || run.status !== 'completed' ? 'ok' : 'bad'}">${label}</b>
+        <span class="muted"> · last check ${ago(run.updated_at)} · <a href="${escape(run.html_url)}">details</a></span>`;
+    } catch {
+      status.innerHTML = '<span class="muted">Couldn’t read the checker’s status.</span>';
+    }
+  }
+  load();
+</script>
+</body>
+</html>
