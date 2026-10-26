@@ -10,6 +10,7 @@ const FAILS_BEFORE_ALERT = 3;
 const KEEPALIVE_DAYS = 30;
 const FORGET_AFTER_DAYS = 7; // drop ballots this long after kick-off
 const DRY_RUN = process.env.DRY_RUN === '1';
+const TEST_NOTIFICATION = process.env.TEST_NOTIFICATION === 'true';
 const DAY = 86_400_000;
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -57,6 +58,18 @@ async function main() {
 
   const ballots = fixtures.map(toBallot).filter(Boolean);
   console.log(`read ${fixtures.length} fixtures, ${ballots.length} with a ballot`);
+
+  if (TEST_NOTIFICATION) {
+    const lines = ballots.filter((b) => phase(b, now) !== 'closed').map((b) => `• ${b.title}: ${phase(b, now)}`);
+    await send({
+      title: 'Test notification',
+      message: `The ballot monitor can read Arsenal’s fixtures and reach your phone.\n\n${
+        lines.length ? `Ballots right now:\n${lines.join('\n')}` : 'No ballots open or announced right now.'
+      }`,
+      tags: ['test_tube'],
+    });
+    return; // a test changes nothing in state.json
+  }
 
   const known = state.ballots ?? {};
   const firstRun = !state.seeded;

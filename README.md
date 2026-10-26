@@ -15,6 +15,8 @@ Each alert is sent once per ballot. It runs on GitHub Actions, so no PC or serve
 3. **First run:** open **Actions → Check for ballots → Run workflow**. Within about a minute your phone should get "Arsenal ballot monitor is running", listing any ballots that are open or coming up.
 4. **Status page (optional):** open **Settings → Pages**, set Source to **Deploy from a branch**, then choose branch `main` and folder `/docs`. The page appears at `https://<your-username>.github.io/arsenal-ballot-watch/`.
 
+To check the alerts still reach your phone at any time, go to **Actions → Check for ballots → Run workflow**, tick **Just send a test notification**, then run it. A test saves nothing.
+
 If the Arsenal API can't be read 3 checks in a row, you get a "can't read the Arsenal site" warning, and another push when it works again.
 
 ## Where the data comes from

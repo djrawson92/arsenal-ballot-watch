@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '*/15 * * * *' # GitHub may run this a few minutes late at busy times
   workflow_dispatch: # "Run workflow" button for a manual check
+    inputs:
+      test:
+        description: Just send a test notification (saves nothing)
+        type: boolean
+        default: false
 
 permissions:
   contents: write # to commit state.json
@@ -26,6 +31,7 @@ jobs:
         run: npm run check
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TEST_NOTIFICATION: ${{ inputs.test }}
       - name: Save what was seen
         if: always()
         run: |
