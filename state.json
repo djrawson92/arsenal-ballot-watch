@@ -55,11 +55,11 @@
       "id": "11452",
       "title": "Arsenal v Manchester United",
       "kickoff": "2026-12-20T16:30",
-      "status": "open",
+      "status": "closed",
       "opens": "2026-10-23T11:00",
       "closes": "2026-10-26T12:00",
       "link": "https://www.eticketing.co.uk/arsenal/",
-      "phase": "open",
+      "phase": "closed",
       "home": true,
       "opponentCode": "MUN",
       "competition": "Premier League"
