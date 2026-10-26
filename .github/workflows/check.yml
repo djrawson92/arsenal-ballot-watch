@@ -2,7 +2,7 @@ name: Check for ballots
 
 on:
   schedule:
-    - cron: '*/15 * * * *' # GitHub may run this a few minutes late at busy times
+    - cron: '7,22,37,52 * * * *' # every 15 min, off the busy :00/:15/:30/:45 slots GitHub often skips
   workflow_dispatch: # "Run workflow" button for a manual check
     inputs:
       test:
