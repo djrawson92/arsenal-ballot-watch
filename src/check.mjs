@@ -84,6 +84,7 @@ async function main() {
         x = `X keys don’t work: ${err.message}`;
       }
     }
+    console.log(x);
     const list = lines.length ? `Ballots right now:\n${lines.join('\n')}` : 'No ballots open or announced right now.';
     await send({
       title: 'Test notification',
