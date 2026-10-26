@@ -22,6 +22,9 @@
   </g>
   <rect x="146" y="196" width="108" height="16" rx="8" fill="#7A0B10"/>
 
-  <!-- Tick on the chest -->
-  <path d="M170 272 l22 22 l42 -48" fill="none" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- "Ballot alerts" across the shirt front, like a sponsor -->
+  <g font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" fill="#FFFFFF" text-anchor="middle">
+    <text x="200" y="268" font-size="36" textLength="150" lengthAdjust="spacingAndGlyphs">BALLOT</text>
+    <text x="200" y="310" font-size="36" textLength="150" lengthAdjust="spacingAndGlyphs">ALERTS</text>
+  </g>
 </svg>
