@@ -107,15 +107,22 @@ export function message(kind, ballot) {
 // Public tweet when a ballot opens or is about to close. No web address: X turns
 // anything that looks like one into a link, and posts with links cost about 13 times as much.
 // Few hashtags: the matchday tag fans search (#ARSMUN), then two club tags.
-export function tweetText(ballot, kind = 'open') {
+export function tweetText(ballot, kind = 'open', now = new Date()) {
   const kickoff = ukTime(ballot.kickoff);
   const closes = ukTime(ballot.closes);
   const code = ballot.opponentCode;
   const matchTag = code ? `#${ballot.home ? `ARS${code}` : `${code}ARS`} ` : '';
-  const when = [kickoff && formatUk(kickoff), ballot.competition].filter(Boolean).join(' · ');
+  const ko = kickoff && `Kick-off ${formatUk(kickoff)}${ballot.competition ? ` (${ballot.competition})` : ''}`;
   const lines =
     kind === 'closing'
-      ? [`⏰ Last chance: ${ballot.title} ballot`, closes && `⏳ Closes ${formatUk(closes)} UK time`, when && `📅 ${when}`]
-      : [`🚨 Ballot OPEN: ${ballot.title}`, when && `📅 ${when}`, closes && `⏳ Closes ${formatUk(closes)} UK time`];
+      ? [`⏰ Last chance: ${ballot.title} ballot`, closes && `Closes ${closesWhen(closes, now)} UK time`, ko]
+      : [`🚨 Ballot now open: ${ballot.title}`, ko, closes && `Closes ${formatUk(closes)} UK time`];
   return [lines.filter(Boolean).join('\n'), `${matchTag}#Arsenal #COYG`].join('\n\n');
+}
+
+// "today at 12:00" when it closes on the same UK day, else the full date.
+function closesWhen(closes, now) {
+  const day = (d) => d.toLocaleDateString('en-GB', { timeZone: 'Europe/London' });
+  if (day(closes) !== day(now)) return formatUk(closes);
+  return `today at ${closes.toLocaleTimeString('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit' })}`;
 }

@@ -23,9 +23,9 @@ If the Arsenal API can't be read 3 checks in a row, you get a "can't read the Ar
 
 When a ballot opens, the monitor can also tweet it from an X account, for example:
 
-> 🚨 Ballot OPEN: Arsenal v Manchester United
-> 📅 Sun 20 Dec, 16:30 · Premier League
-> ⏳ Closes Mon 26 Oct, 12:00 UK time
+> 🚨 Ballot now open: Arsenal v Manchester United
+> Kick-off Sun 20 Dec, 16:30 (Premier League)
+> Closes Mon 26 Oct, 12:00 UK time
 >
 > #ARSMUN #Arsenal #COYG
 

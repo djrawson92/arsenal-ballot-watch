@@ -83,10 +83,10 @@ test('messages show UK times', () => {
   assert.match(m.message, /Closes Mon 26 Oct(,| at) 12:00/);
 });
 
-test('tweet has the match, closing time and matchday hashtag, and no web address', () => {
+test('tweet has the match, kick-off, closing time and matchday hashtag, and no web address', () => {
   const text = tweetText({ ...manUtd, competition: 'Premier League' });
-  assert.match(text, /^🚨 Ballot OPEN: Arsenal v Manchester United\n📅 Sun 20 Dec(,| at) 16:30 · Premier League\n⏳ Closes Mon 26 Oct(,| at) 12:00 UK time/);
-  assert.match(text, /UK time\n\n#ARSMUN #Arsenal #COYG$/);
+  assert.match(text, /^🚨 Ballot now open: Arsenal v Manchester United\nKick-off Sun 20 Dec(,| at) 16:30 \(Premier League\)\nCloses Mon 26 Oct(,| at) 12:00 UK time\n\n#ARSMUN #Arsenal #COYG$/);
+  assert.equal([...text.matchAll(/\p{Extended_Pictographic}/gu)].length, 1, 'one emoji only');
   assert.doesNotMatch(text, /https?:|www\.|\.co\.uk|\.com|ticketing site/);
   assert.ok([...text].length <= 280);
 });
@@ -96,8 +96,9 @@ test('away hashtag puts the home side first; unknown clubs get no match tag', ()
   assert.match(tweetText({ ...manUtd, opponentCode: null }), /\n\n#Arsenal #COYG$/);
 });
 
-test('closing-soon tweet leads with the deadline', () => {
-  const text = tweetText({ ...manUtd, competition: 'Premier League' }, 'closing');
-  assert.match(text, /^⏰ Last chance: Arsenal v Manchester United ballot\n⏳ Closes Mon 26 Oct(,| at) 12:00 UK time\n📅 Sun 20 Dec(,| at) 16:30 · Premier League\n\n#ARSMUN #Arsenal #COYG$/);
-  assert.notEqual(text, tweetText(manUtd, 'open')); // X rejects exact duplicates
+test('closing-soon tweet leads with the deadline, saying "today" on the day', () => {
+  const b = { ...manUtd, competition: 'Premier League' };
+  assert.match(tweetText(b, 'closing', at('2026-10-26T01:00Z')), /^⏰ Last chance: Arsenal v Manchester United ballot\nCloses today at 12:00 UK time\nKick-off Sun 20 Dec(,| at) 16:30 \(Premier League\)\n\n#ARSMUN #Arsenal #COYG$/);
+  assert.match(tweetText(b, 'closing', at('2026-10-25T23:30Z')), /Closes Mon 26 Oct(,| at) 12:00 UK time/); // still Sunday in the UK
+  assert.notEqual(tweetText(b, 'closing'), tweetText(b, 'open')); // X rejects exact duplicates
 });
