@@ -4,7 +4,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { fetchFixtures } from './api.mjs';
 import { alertsFor, formatUk, message, phase, toBallot, tweetText, ukTime } from './ballots.mjs';
 import { notify } from './notify.mjs';
-import { credentials, postTweet, whoAmI } from './x.mjs';
+import { credentials, keyHints, postTweet, whoAmI } from './x.mjs';
 
 const STATE_FILE = new URL('../state.json', import.meta.url);
 const FAILS_BEFORE_ALERT = 3;
@@ -81,7 +81,8 @@ async function main() {
       try {
         x = `X keys work: tweets will post as @${await whoAmI(X_CREDS)}.`;
       } catch (err) {
-        x = `X keys don’t work: ${err.message}`;
+        const hints = keyHints();
+        x = `X keys don’t work: ${err.message.replace(/\s+/g, ' ')}${hints.length ? `\n${hints.join('\n')}` : ''}`;
       }
     }
     console.log(x);

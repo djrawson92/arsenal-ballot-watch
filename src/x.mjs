@@ -6,10 +6,31 @@ const API = 'https://api.x.com/2';
 // RFC 3986 encoding, which OAuth requires (encodeURIComponent leaves !'()* alone).
 const enc = (s) => encodeURIComponent(s).replace(/[!'()*]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`);
 
+const NAMES = ['X_API_KEY', 'X_API_SECRET', 'X_ACCESS_TOKEN', 'X_ACCESS_SECRET'];
+
+// Secrets pasted on a phone often pick up spaces or line breaks.
 export function credentials(env = process.env) {
-  const { X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET } = env;
-  if (!X_API_KEY || !X_API_SECRET || !X_ACCESS_TOKEN || !X_ACCESS_SECRET) return null;
-  return { consumerKey: X_API_KEY, consumerSecret: X_API_SECRET, token: X_ACCESS_TOKEN, tokenSecret: X_ACCESS_SECRET };
+  const [consumerKey, consumerSecret, token, tokenSecret] = NAMES.map((n) => (env[n] ?? '').replace(/\s+/g, ''));
+  if (!consumerKey || !consumerSecret || !token || !tokenSecret) return null;
+  return { consumerKey, consumerSecret, token, tokenSecret };
+}
+
+// Hints about which secret is probably the wrong kind of key, judged by its shape
+// only (values are never printed). X's console also shows a Client ID, Client
+// Secret and Bearer Token, which look similar but don't work here.
+export function keyHints(env = process.env) {
+  const v = Object.fromEntries(NAMES.map((n) => [n, (env[n] ?? '').replace(/\s+/g, '')]));
+  const hints = [];
+  for (const n of NAMES) {
+    if (/^AAAAAAAA/.test(v[n]) || v[n].length > 90) hints.push(`${n} looks like the Bearer Token, which isn't used here.`);
+    else if (/:\d+:ci$/.test(v[n])) hints.push(`${n} looks like the OAuth 2.0 Client ID, which isn't used here.`);
+  }
+  if (v.X_ACCESS_TOKEN && !/^\d+-\w+$/.test(v.X_ACCESS_TOKEN)) {
+    hints.push('X_ACCESS_TOKEN should start with digits and a dash (e.g. 1849…-Ab3…). It doesn’t, so it’s probably another key.');
+  }
+  if (/^\d+-/.test(v.X_API_KEY) || /^\d+-/.test(v.X_API_SECRET)) hints.push('An Access Token is in X_API_KEY or X_API_SECRET; the boxes may be swapped.');
+  if (v.X_API_KEY && (v.X_API_KEY.length < 18 || v.X_API_KEY.length > 30)) hints.push('X_API_KEY is an unusual length for an API Key (normally about 25 characters).');
+  return hints;
 }
 
 // `params` are query/form parameters that must be signed too; a JSON body is not signed.
