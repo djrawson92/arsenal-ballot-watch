@@ -11,7 +11,10 @@
       "opens": "2026-09-18T11:00",
       "closes": "2026-09-21T11:00",
       "link": "https://www.eticketing.co.uk/arsenal/Events?preFilter=85&preFilterName=Ballot%20Registrations",
-      "phase": "closed"
+      "phase": "closed",
+      "home": true,
+      "opponentCode": "HUL",
+      "competition": "Premier League"
     },
     "11426": {
       "firstSeen": "2026-10-25",
@@ -23,7 +26,10 @@
       "opens": "2026-10-02T11:00",
       "closes": "2026-10-05T11:00",
       "link": "https://www.eticketing.co.uk/arsenal",
-      "phase": "closed"
+      "phase": "closed",
+      "home": true,
+      "opponentCode": "MCI",
+      "competition": "Premier League"
     },
     "11429": {
       "firstSeen": "2026-10-25",
@@ -35,12 +41,16 @@
       "opens": "2026-10-16T11:00",
       "closes": "2026-10-19T11:00",
       "link": "https://www.eticketing.co.uk/arsenal/",
-      "phase": "closed"
+      "phase": "closed",
+      "home": true,
+      "opponentCode": "BOU",
+      "competition": "Premier League"
     },
     "11452": {
       "firstSeen": "2026-10-25",
       "sent": [
-        "open"
+        "open",
+        "closing"
       ],
       "id": "11452",
       "title": "Arsenal v Manchester United",
@@ -49,7 +59,10 @@
       "opens": "2026-10-23T11:00",
       "closes": "2026-10-26T12:00",
       "link": "https://www.eticketing.co.uk/arsenal/",
-      "phase": "open"
+      "phase": "open",
+      "home": true,
+      "opponentCode": "MUN",
+      "competition": "Premier League"
     },
     "11589": {
       "firstSeen": "2026-10-25",
@@ -61,7 +74,10 @@
       "opens": "2026-09-25T11:00",
       "closes": "2026-09-28T11:00",
       "link": "https://www.eticketing.co.uk/arsenal/",
-      "phase": "closed"
+      "phase": "closed",
+      "home": true,
+      "opponentCode": "BVB",
+      "competition": "UEFA Champions League"
     },
     "11590": {
       "firstSeen": "2026-10-25",
@@ -73,7 +89,10 @@
       "opens": "2026-10-09T11:00",
       "closes": "2026-10-12T11:00",
       "link": "https://www.eticketing.co.uk/arsenal/",
-      "phase": "closed"
+      "phase": "closed",
+      "home": true,
+      "opponentCode": "RMA",
+      "competition": "UEFA Champions League"
     }
   },
   "seeded": true,
