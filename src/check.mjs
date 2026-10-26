@@ -2,7 +2,7 @@
 // phone notification for each ballot that's newly announced, newly open or about to close.
 import { readFile, writeFile } from 'node:fs/promises';
 import { fetchFixtures } from './api.mjs';
-import { alertsFor, formatUk, message, phase, toBallot, tweetText, ukTime } from './ballots.mjs';
+import { alertsFor, CLOSING_SOON_HOURS, formatUk, message, phase, toBallot, tweetText, ukTime } from './ballots.mjs';
 import { notify } from './notify.mjs';
 import { credentials, keyHints, postTweet, whoAmI } from './x.mjs';
 
@@ -12,6 +12,7 @@ const KEEPALIVE_DAYS = 30;
 const FORGET_AFTER_DAYS = 7; // drop ballots this long after kick-off
 const DRY_RUN = process.env.DRY_RUN === '1';
 const TEST_NOTIFICATION = process.env.TEST_NOTIFICATION === 'true';
+const TWEET_NOW = process.env.TWEET_NOW === 'true';
 const X_CREDS = credentials(); // null until the four X_* secrets are added
 const TWEETED = new Set(['open', 'closing']); // alert kinds that are also posted to X
 const DAY = 86_400_000;
@@ -74,6 +75,18 @@ async function main() {
 
   const ballots = fixtures.map(toBallot).filter(Boolean);
   console.log(`read ${fixtures.length} fixtures, ${ballots.length} with a ballot`);
+
+  // Manual: post open ballots straight away, e.g. after changing the tweet format.
+  if (TWEET_NOW) {
+    if (!X_CREDS) throw new Error('Tweet now needs the four X_* secrets');
+    const open = ballots.filter((b) => phase(b, now) === 'open');
+    if (!open.length) console.log('no open ballots to tweet');
+    for (const b of open) {
+      const closes = ukTime(b.closes);
+      await tweet(b, closes && closes - now <= CLOSING_SOON_HOURS * 3_600_000 ? 'closing' : 'open');
+    }
+    return; // changes nothing in state.json
+  }
 
   if (TEST_NOTIFICATION) {
     const lines = ballots.filter((b) => phase(b, now) !== 'closed').map((b) => `• ${b.title}: ${phase(b, now)}`);
