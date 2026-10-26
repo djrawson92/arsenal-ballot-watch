@@ -107,6 +107,14 @@ export function message(kind, ballot) {
 // Public tweet for a newly opened ballot. No web address: X turns anything that looks
 // like one into a link, and posts with links cost about 13 times as much.
 // Few hashtags: the matchday tag fans search (#ARSMUN), then two club tags.
+// The call to action rotates (fixed per match) so the timeline doesn't read like a bot.
+const CALLS = [
+  'Get your entry in before it closes 🎟️',
+  'Members, get your entries in 🎟️',
+  'Don’t miss this one, get your entry in 🎟️',
+  'Fingers crossed, get your entry in 🎟️',
+];
+
 export function tweetText(ballot) {
   const kickoff = ukTime(ballot.kickoff);
   const closes = ukTime(ballot.closes);
@@ -115,7 +123,7 @@ export function tweetText(ballot) {
   const when = [kickoff && formatUk(kickoff), ballot.competition].filter(Boolean).join(' · ');
   return [
     [`🚨 Ballot OPEN: ${ballot.title}`, when && `📅 ${when}`, closes && `⏳ Closes ${formatUk(closes)} UK time`].filter(Boolean).join('\n'),
-    'Members: apply now on the Arsenal ticketing site. Turn on 🔔 so you never miss a ballot.',
+    CALLS[[...String(ballot.id ?? '')].reduce((n, c) => n + c.charCodeAt(0), 0) % CALLS.length],
     `${matchTag}#Arsenal #COYG`,
   ].join('\n\n');
 }
