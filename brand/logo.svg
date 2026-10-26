@@ -22,9 +22,10 @@
   </g>
   <rect x="146" y="196" width="108" height="16" rx="8" fill="#7A0B10"/>
 
-  <!-- "Ballot alerts" across the shirt front, like a sponsor -->
+  <!-- "AFC Ballot Alerts" across the shirt front, like a sponsor -->
   <g font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" fill="#FFFFFF" text-anchor="middle">
-    <text x="200" y="268" font-size="36" textLength="150" lengthAdjust="spacingAndGlyphs">BALLOT</text>
-    <text x="200" y="310" font-size="36" textLength="150" lengthAdjust="spacingAndGlyphs">ALERTS</text>
+    <text x="200" y="254" font-size="30" textLength="70" lengthAdjust="spacingAndGlyphs">AFC</text>
+    <text x="200" y="292" font-size="34" textLength="146" lengthAdjust="spacingAndGlyphs">BALLOT</text>
+    <text x="200" y="328" font-size="34" textLength="146" lengthAdjust="spacingAndGlyphs">ALERTS</text>
   </g>
 </svg>
