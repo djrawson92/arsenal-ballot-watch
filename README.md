@@ -27,11 +27,9 @@ When a ballot opens, the monitor can also tweet it from an X account, for exampl
 > 📅 Sun 20 Dec, 16:30 · Premier League
 > ⏳ Closes Mon 26 Oct, 12:00 UK time
 >
-> Get your entry in before it closes 🎟️
->
 > #ARSMUN #Arsenal #COYG
 
-The middle line rotates between a few wordings, fixed per match. The matchday hashtag (#ARSMUN, or #MUNARS away) uses the club codes in `src/ballots.mjs`. A club missing from that list just gets no match tag.
+The matchday hashtag (#ARSMUN, or #MUNARS away) uses the club codes in `src/ballots.mjs`. A club missing from that list just gets no match tag.
 
 It only tweets openings, and tweets carry no web address. X turns anything that looks like one into a link, and a post with a link costs about $0.20 instead of about $0.015. Tweeting stays off until all four X secrets below are set.
 
