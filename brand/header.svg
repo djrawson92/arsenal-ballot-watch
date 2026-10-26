@@ -13,7 +13,7 @@
     <text x="680" y="232" font-size="74" fill="#FFFFFF">AFC BALLOT ALERTS</text>
   </g>
   <rect x="530" y="260" width="300" height="10" rx="5" fill="#E0242B"/>
-  <text x="680" y="320" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#C9D3E6">Unofficial alerts when ticket ballots open</text>
+  <text x="680" y="320" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#C9D3E6">Alerts when ticket ballots open</text>
 
   <!-- Tickets, right -->
   <g transform="translate(1270 262) rotate(14)">
