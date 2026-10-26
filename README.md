@@ -19,6 +19,30 @@ To check the alerts still reach your phone at any time, go to **Actions → Chec
 
 If the Arsenal API can't be read 3 checks in a row, you get a "can't read the Arsenal site" warning, and another push when it works again.
 
+## Posting to X (optional)
+
+When a ballot opens, the monitor can also tweet it from an X account, for example:
+
+> 🗳️ Ballot now OPEN: Arsenal v Manchester United (Sun 20 Dec, 16:30)
+>
+> Closes Mon 26 Oct, 12:00 UK time.
+>
+> Members: apply on the Arsenal ticketing site.
+>
+> #Arsenal #AFC
+
+It only tweets openings, and tweets carry no web address. X turns anything that looks like one into a link, and a post with a link costs about $0.20 instead of about $0.015. Tweeting stays off until all four X secrets below are set.
+
+1. **Make the account.** Make it obviously unofficial: no club crest or club photos, and a name such as "AFC Ballot Alerts (unofficial)". In the bio, say it's automated and who runs it, e.g. "Unofficial, automated alerts when Arsenal ticket ballots open. Run by @yourname. Not affiliated with Arsenal FC."
+2. **Label it as automated.** On the bot account, go to **Settings → Your account → Account information → Automation** and link it to your personal account. X's rules require this.
+3. **Get developer access.** Sign in to the X Developer Console (developer.x.com) as the bot account and create an app. Add a payment card and buy a small amount of credit. X charges per post, and $5 lasts years at this rate.
+4. **Allow posting.** In the app's **User authentication settings**, set permissions to **Read and write**. Do this before step 5, because keys made earlier stay read-only.
+5. **Make the keys.** Under **Keys and tokens**, generate the **API Key and Secret** and the **Access Token and Secret**.
+6. **Add four repo secrets** (Settings → Secrets and variables → Actions): `X_API_KEY`, `X_API_SECRET`, `X_ACCESS_TOKEN` and `X_ACCESS_SECRET`.
+7. **Check them for free.** Run the workflow with **Just send a test notification** ticked. The push ends with "X keys work: tweets will post as @handle" or says what's wrong. This posts nothing.
+
+If a tweet fails, for example because the credit has run out, you get a "Couldn't tweet the ballot" push. The phone alert still goes out as normal.
+
 ## Where the data comes from
 
 arsenal.com's ticket pages load fixtures in the browser from a public GraphQL API (`https://afc-prd.graph.arsenal.com/graphql`, query `getAllLatestLiveReports`). Each fixture's `fixtureTicketing` has:
@@ -35,6 +59,7 @@ The club seems to update `ballot` by hand, so when the dates say a ballot should
 - `src/ballots.mjs`: turns fixtures into ballots and decides which alerts are due.
 - `src/check.mjs`: one check; reads and writes `state.json`.
 - `src/notify.mjs`: sends the ntfy push.
+- `src/x.mjs`: signs and sends X API requests.
 - `state.json`: ballots seen and alerts already sent. The workflow commits it when it changes.
 - `docs/index.html`: the status page.
 

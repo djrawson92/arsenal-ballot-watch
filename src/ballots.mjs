@@ -89,3 +89,16 @@ export function message(kind, ballot) {
       return { title: `Ballot closing soon: ${ballot.title}`, message: `${match}\n${until} Apply now if you haven’t.`, tags: ['soccer', 'hourglass'], priority: 5 };
   }
 }
+
+// Public tweet for a newly opened ballot. No web address: X turns anything that looks
+// like one into a link, and posts with links cost about 13 times as much.
+export function tweetText(ballot) {
+  const kickoff = ukTime(ballot.kickoff);
+  const closes = ukTime(ballot.closes);
+  return [
+    `🗳️ Ballot now OPEN: ${ballot.title}${kickoff ? ` (${formatUk(kickoff)})` : ''}`,
+    closes ? `Closes ${formatUk(closes)} UK time.` : '',
+    'Members: apply on the Arsenal ticketing site.',
+    '#Arsenal #AFC',
+  ].filter(Boolean).join('\n\n');
+}

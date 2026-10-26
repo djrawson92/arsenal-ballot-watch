@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { alertsFor, message, phase, toBallot, ukTime } from '../src/ballots.mjs';
+import { alertsFor, message, phase, toBallot, tweetText, ukTime } from '../src/ballots.mjs';
 
 // Real API response from 25 Oct 2026, trimmed to five fixtures.
 const api = JSON.parse(readFileSync(new URL('./fixtures/api-2026-10-25.json', import.meta.url)));
@@ -78,4 +78,12 @@ test('messages show UK times', () => {
   assert.equal(m.title, 'Ballot OPEN: Arsenal v Manchester United');
   assert.match(m.message, /Sun 20 Dec(,| at) 16:30/);
   assert.match(m.message, /Closes Mon 26 Oct(,| at) 12:00/);
+});
+
+test('tweet has the match and closing time, and no web address', () => {
+  const text = tweetText(manUtd);
+  assert.match(text, /^🗳️ Ballot now OPEN: Arsenal v Manchester United \(Sun 20 Dec(,| at) 16:30\)/);
+  assert.match(text, /Closes Mon 26 Oct(,| at) 12:00 UK time\./);
+  assert.doesNotMatch(text, /https?:|www\.|\.co\.uk|\.com/);
+  assert.ok([...text].length <= 280);
 });

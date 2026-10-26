@@ -2,8 +2,9 @@
 // phone notification for each ballot that's newly announced, newly open or about to close.
 import { readFile, writeFile } from 'node:fs/promises';
 import { fetchFixtures } from './api.mjs';
-import { alertsFor, formatUk, message, phase, toBallot, ukTime } from './ballots.mjs';
+import { alertsFor, formatUk, message, phase, toBallot, tweetText, ukTime } from './ballots.mjs';
 import { notify } from './notify.mjs';
+import { credentials, postTweet, whoAmI } from './x.mjs';
 
 const STATE_FILE = new URL('../state.json', import.meta.url);
 const FAILS_BEFORE_ALERT = 3;
@@ -11,6 +12,7 @@ const KEEPALIVE_DAYS = 30;
 const FORGET_AFTER_DAYS = 7; // drop ballots this long after kick-off
 const DRY_RUN = process.env.DRY_RUN === '1';
 const TEST_NOTIFICATION = process.env.TEST_NOTIFICATION === 'true';
+const X_CREDS = credentials(); // null until the four X_* secrets are added
 const DAY = 86_400_000;
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -26,6 +28,19 @@ async function loadState() {
 async function send(alert) {
   if (DRY_RUN) return console.log('[dry run] would notify:', JSON.stringify(alert));
   await notify(alert);
+}
+
+// A failed tweet is reported to the phone but never stops the check or the phone alert.
+async function tweet(ballot) {
+  const text = tweetText(ballot);
+  if (DRY_RUN) return console.log('[dry run] would tweet:', JSON.stringify(text));
+  try {
+    const { id } = await postTweet(X_CREDS, text);
+    console.log(`tweeted ${id}`);
+  } catch (err) {
+    console.error(`tweet failed: ${err.message}`);
+    await send({ title: 'Couldn’t tweet the ballot', message: `${ballot.title}\n${err.message}`, tags: ['warning'] });
+  }
 }
 
 async function main() {
@@ -61,11 +76,18 @@ async function main() {
 
   if (TEST_NOTIFICATION) {
     const lines = ballots.filter((b) => phase(b, now) !== 'closed').map((b) => `• ${b.title}: ${phase(b, now)}`);
+    let x = 'X posting is off (no X keys set).';
+    if (X_CREDS) {
+      try {
+        x = `X keys work: tweets will post as @${await whoAmI(X_CREDS)}.`;
+      } catch (err) {
+        x = `X keys don’t work: ${err.message}`;
+      }
+    }
+    const list = lines.length ? `Ballots right now:\n${lines.join('\n')}` : 'No ballots open or announced right now.';
     await send({
       title: 'Test notification',
-      message: `The ballot monitor can read Arsenal’s fixtures and reach your phone.\n\n${
-        lines.length ? `Ballots right now:\n${lines.join('\n')}` : 'No ballots open or announced right now.'
-      }`,
+      message: `The ballot monitor can read Arsenal’s fixtures and reach your phone.\n\n${list}\n\n${x}`,
       tags: ['test_tube'],
     });
     return; // a test changes nothing in state.json
@@ -81,6 +103,7 @@ async function main() {
       if (!firstRun) {
         console.log(`${kind}: ${ballot.title}`);
         await send({ ...message(kind, ballot), click: ballot.link });
+        if (kind === 'open' && X_CREDS) await tweet(ballot);
       }
       entry.sent.push(kind);
     }
