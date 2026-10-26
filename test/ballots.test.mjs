@@ -95,3 +95,9 @@ test('away hashtag puts the home side first; unknown clubs get no match tag', ()
   assert.match(tweetText({ ...manUtd, home: false, title: 'Manchester United v Arsenal' }), /#MUNARS #Arsenal/);
   assert.match(tweetText({ ...manUtd, opponentCode: null }), /\n\n#Arsenal #COYG$/);
 });
+
+test('closing-soon tweet leads with the deadline', () => {
+  const text = tweetText({ ...manUtd, competition: 'Premier League' }, 'closing');
+  assert.match(text, /^⏰ Last chance: Arsenal v Manchester United ballot\n⏳ Closes Mon 26 Oct(,| at) 12:00 UK time\n📅 Sun 20 Dec(,| at) 16:30 · Premier League\n\n#ARSMUN #Arsenal #COYG$/);
+  assert.notEqual(text, tweetText(manUtd, 'open')); // X rejects exact duplicates
+});

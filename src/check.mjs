@@ -13,6 +13,7 @@ const FORGET_AFTER_DAYS = 7; // drop ballots this long after kick-off
 const DRY_RUN = process.env.DRY_RUN === '1';
 const TEST_NOTIFICATION = process.env.TEST_NOTIFICATION === 'true';
 const X_CREDS = credentials(); // null until the four X_* secrets are added
+const TWEETED = new Set(['open', 'closing']); // alert kinds that are also posted to X
 const DAY = 86_400_000;
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -31,8 +32,8 @@ async function send(alert) {
 }
 
 // A failed tweet is reported to the phone but never stops the check or the phone alert.
-async function tweet(ballot) {
-  const text = tweetText(ballot);
+async function tweet(ballot, kind) {
+  const text = tweetText(ballot, kind);
   if (DRY_RUN) return console.log('[dry run] would tweet:', JSON.stringify(text));
   try {
     const { id } = await postTweet(X_CREDS, text);
@@ -105,7 +106,7 @@ async function main() {
       if (!firstRun) {
         console.log(`${kind}: ${ballot.title}`);
         await send({ ...message(kind, ballot), click: ballot.link });
-        if (kind === 'open' && X_CREDS) await tweet(ballot);
+        if (TWEETED.has(kind) && X_CREDS) await tweet(ballot, kind);
       }
       entry.sent.push(kind);
     }

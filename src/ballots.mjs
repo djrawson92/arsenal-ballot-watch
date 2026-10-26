@@ -104,17 +104,18 @@ export function message(kind, ballot) {
   }
 }
 
-// Public tweet for a newly opened ballot. No web address: X turns anything that looks
-// like one into a link, and posts with links cost about 13 times as much.
+// Public tweet when a ballot opens or is about to close. No web address: X turns
+// anything that looks like one into a link, and posts with links cost about 13 times as much.
 // Few hashtags: the matchday tag fans search (#ARSMUN), then two club tags.
-export function tweetText(ballot) {
+export function tweetText(ballot, kind = 'open') {
   const kickoff = ukTime(ballot.kickoff);
   const closes = ukTime(ballot.closes);
   const code = ballot.opponentCode;
   const matchTag = code ? `#${ballot.home ? `ARS${code}` : `${code}ARS`} ` : '';
   const when = [kickoff && formatUk(kickoff), ballot.competition].filter(Boolean).join(' · ');
-  return [
-    [`🚨 Ballot OPEN: ${ballot.title}`, when && `📅 ${when}`, closes && `⏳ Closes ${formatUk(closes)} UK time`].filter(Boolean).join('\n'),
-    `${matchTag}#Arsenal #COYG`,
-  ].join('\n\n');
+  const lines =
+    kind === 'closing'
+      ? [`⏰ Last chance: ${ballot.title} ballot`, closes && `⏳ Closes ${formatUk(closes)} UK time`, when && `📅 ${when}`]
+      : [`🚨 Ballot OPEN: ${ballot.title}`, when && `📅 ${when}`, closes && `⏳ Closes ${formatUk(closes)} UK time`];
+  return [lines.filter(Boolean).join('\n'), `${matchTag}#Arsenal #COYG`].join('\n\n');
 }
