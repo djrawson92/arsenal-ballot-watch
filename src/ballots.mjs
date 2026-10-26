@@ -6,6 +6,17 @@
 
 export const CLOSING_SOON_HOURS = 12;
 const NO_BALLOT = new Set(['', 'notavailable']);
+// Standard three-letter codes, used for matchday hashtags like #ARSMUN. The API has none.
+const CLUB_CODES = {
+  'aston villa': 'AVL', bournemouth: 'BOU', brentford: 'BRE', 'brighton & hove albion': 'BHA', brighton: 'BHA',
+  burnley: 'BUR', chelsea: 'CHE', 'crystal palace': 'CRY', everton: 'EVE', fulham: 'FUL', 'hull city': 'HUL',
+  'ipswich town': 'IPS', 'leeds united': 'LEE', 'leicester city': 'LEI', liverpool: 'LIV', 'manchester city': 'MCI',
+  'manchester united': 'MUN', 'newcastle united': 'NEW', 'nottingham forest': 'NFO', southampton: 'SOU',
+  sunderland: 'SUN', 'tottenham hotspur': 'TOT', 'west ham united': 'WHU', 'wolverhampton wanderers': 'WOL',
+  'real madrid cf': 'RMA', 'borussia dortmund': 'BVB', 'real betis': 'BET', 'sk slavia praha': 'SLA',
+  'fc barcelona': 'BAR', 'bayern münchen': 'BAY', 'paris saint-germain': 'PSG', 'inter milan': 'INT', 'ac milan': 'MIL',
+};
+
 const TEAM_NAMES = { men: '', women: 'Women', 'mens-academy-u21s': 'U21', 'mens-academy-u18s': 'U18' };
 
 // API times are UK wall-clock times without an offset, e.g. "2026-10-23T11:00".
@@ -39,6 +50,9 @@ export function toBallot(fixture) {
   return {
     id: String(fixture.id),
     title: home ? `${arsenal} v ${opponent}` : `${opponent} v ${arsenal}`,
+    home,
+    opponentCode: team ? null : (CLUB_CODES[opponent.toLowerCase()] ?? null), // first team only
+    competition: details.competition?.name ?? null,
     kickoff: details.fixtureDate ?? null,
     status,
     opens: ticketing.ballotOpenDate ?? null,
@@ -92,13 +106,16 @@ export function message(kind, ballot) {
 
 // Public tweet for a newly opened ballot. No web address: X turns anything that looks
 // like one into a link, and posts with links cost about 13 times as much.
+// Few hashtags: the matchday tag fans search (#ARSMUN), then two club tags.
 export function tweetText(ballot) {
   const kickoff = ukTime(ballot.kickoff);
   const closes = ukTime(ballot.closes);
+  const code = ballot.opponentCode;
+  const matchTag = code ? `#${ballot.home ? `ARS${code}` : `${code}ARS`} ` : '';
+  const when = [kickoff && formatUk(kickoff), ballot.competition].filter(Boolean).join(' · ');
   return [
-    `🗳️ Ballot now OPEN: ${ballot.title}${kickoff ? ` (${formatUk(kickoff)})` : ''}`,
-    closes ? `Closes ${formatUk(closes)} UK time.` : '',
-    'Members: apply on the Arsenal ticketing site.',
-    '#Arsenal #AFC',
-  ].filter(Boolean).join('\n\n');
+    [`🚨 Ballot OPEN: ${ballot.title}`, when && `📅 ${when}`, closes && `⏳ Closes ${formatUk(closes)} UK time`].filter(Boolean).join('\n'),
+    'Members: apply now on the Arsenal ticketing site. Turn on 🔔 so you never miss a ballot.',
+    `${matchTag}#Arsenal #COYG`,
+  ].join('\n\n');
 }

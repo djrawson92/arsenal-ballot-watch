@@ -12,6 +12,7 @@ const QUERY = `query Fixtures($pageNumber: Float!, $pageSize: Float!) {
           arsenalTeam { slug }
           fixtureDate
           opponent { name }
+          competition { name }
           venueType1
         }
         metaData {

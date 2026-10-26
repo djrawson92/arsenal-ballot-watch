@@ -23,13 +23,15 @@ If the Arsenal API can't be read 3 checks in a row, you get a "can't read the Ar
 
 When a ballot opens, the monitor can also tweet it from an X account, for example:
 
-> 🗳️ Ballot now OPEN: Arsenal v Manchester United (Sun 20 Dec, 16:30)
+> 🚨 Ballot OPEN: Arsenal v Manchester United
+> 📅 Sun 20 Dec, 16:30 · Premier League
+> ⏳ Closes Mon 26 Oct, 12:00 UK time
 >
-> Closes Mon 26 Oct, 12:00 UK time.
+> Members: apply now on the Arsenal ticketing site. Turn on 🔔 so you never miss a ballot.
 >
-> Members: apply on the Arsenal ticketing site.
->
-> #Arsenal #AFC
+> #ARSMUN #Arsenal #COYG
+
+The matchday hashtag (#ARSMUN, or #MUNARS away) uses the club codes in `src/ballots.mjs`. A club missing from that list just gets no match tag.
 
 It only tweets openings, and tweets carry no web address. X turns anything that looks like one into a link, and a post with a link costs about $0.20 instead of about $0.015. Tweeting stays off until all four X secrets below are set.
 

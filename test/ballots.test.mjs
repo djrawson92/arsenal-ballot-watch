@@ -18,6 +18,9 @@ test('reads the real fields', () => {
   assert.deepEqual(manUtd, {
     id: '11452',
     title: 'Arsenal v Manchester United',
+    home: true,
+    opponentCode: 'MUN',
+    competition: null,
     kickoff: '2026-12-20T16:30',
     status: 'open',
     opens: '2026-10-23T11:00',
@@ -80,10 +83,15 @@ test('messages show UK times', () => {
   assert.match(m.message, /Closes Mon 26 Oct(,| at) 12:00/);
 });
 
-test('tweet has the match and closing time, and no web address', () => {
-  const text = tweetText(manUtd);
-  assert.match(text, /^🗳️ Ballot now OPEN: Arsenal v Manchester United \(Sun 20 Dec(,| at) 16:30\)/);
-  assert.match(text, /Closes Mon 26 Oct(,| at) 12:00 UK time\./);
+test('tweet has the match, closing time and matchday hashtag, and no web address', () => {
+  const text = tweetText({ ...manUtd, competition: 'Premier League' });
+  assert.match(text, /^🚨 Ballot OPEN: Arsenal v Manchester United\n📅 Sun 20 Dec(,| at) 16:30 · Premier League\n⏳ Closes Mon 26 Oct(,| at) 12:00 UK time/);
+  assert.match(text, /\n\n#ARSMUN #Arsenal #COYG$/);
   assert.doesNotMatch(text, /https?:|www\.|\.co\.uk|\.com/);
   assert.ok([...text].length <= 280);
+});
+
+test('away hashtag puts the home side first; unknown clubs get no match tag', () => {
+  assert.match(tweetText({ ...manUtd, home: false, title: 'Manchester United v Arsenal' }), /#MUNARS #Arsenal/);
+  assert.match(tweetText({ ...manUtd, opponentCode: null }), /\n\n#Arsenal #COYG$/);
 });
