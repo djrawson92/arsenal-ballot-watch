@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <!-- Background: full-bleed red, so X's circular crop looks right -->
+  <rect width="400" height="400" fill="#D7151C"/>
+  <circle cx="200" cy="200" r="200" fill="#E0242B"/>
+
+  <!-- Ticket going into the slot, tilted slightly -->
+  <clipPath id="above-slot"><rect width="400" height="177"/></clipPath>
+  <g clip-path="url(#above-slot)"><g transform="rotate(-8 200 160)">
+    <path d="M140 62 h120 a6 6 0 0 1 6 6 v34 a14 14 0 0 0 0 28 v58 h-132 v-58 a14 14 0 0 0 0 -28 v-34 a6 6 0 0 1 6 -6 z" fill="#FFFFFF"/>
+    <line x1="232" y1="74" x2="232" y2="170" stroke="#E0242B" stroke-width="5" stroke-dasharray="7 7" stroke-linecap="round"/>
+    <rect x="152" y="84" width="62" height="12" rx="6" fill="#E0242B"/>
+    <rect x="152" y="108" width="46" height="10" rx="5" fill="#F3A5A8"/>
+    <rect x="152" y="128" width="54" height="10" rx="5" fill="#F3A5A8"/>
+  </g></g>
+
+  <!-- Ballot box -->
+  <path d="M96 176 h208 l20 40 v104 a14 14 0 0 1 -14 14 h-220 a14 14 0 0 1 -14 -14 v-104 z" fill="#FFFFFF"/>
+  <path d="M76 216 h248" stroke="#E0242B" stroke-width="6"/>
+  <rect x="140" y="168" width="120" height="18" rx="9" fill="#9E0E13"/>
+
+  <!-- Tick on the box front -->
+  <path d="M164 276 l26 26 l48 -54" fill="none" stroke="#E0242B" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+
+</svg>
