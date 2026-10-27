@@ -21,6 +21,16 @@ To check the alerts still reach your phone at any time, go to **Actions → Chec
 
 If the Arsenal API can't be read 3 checks in a row, you get a "can't read the Arsenal site" warning, and another push when it works again.
 
+## Backup timer (cron-job.org)
+
+GitHub often skips scheduled runs on small repos (one run in nine hours on 26 Oct 2026), so a free [cron-job.org](https://cron-job.org) job also starts the check every 15 minutes:
+
+- `POST https://api.github.com/repos/djrawson92/arsenal-ballot-watch/actions/workflows/check.yml/dispatches` with body `{"ref":"main"}`
+- Headers: `Authorization: Bearer <GitHub fine-grained token>`, `Accept: application/vnd.github+json`, `Content-Type: application/json`, `X-GitHub-Api-Version: 2022-11-28`
+- The token only has **Actions: Read and write** on this repo. **It expires**, and when it does, cron-job.org starts showing 401 errors: generate a new one and paste it into the Authorization header.
+
+A successful call returns 204. Extra runs are harmless: they queue one at a time, and each alert is sent only once.
+
 ## Posting to X (optional)
 
 When a ballot opens, the monitor can also tweet it from an X account, for example:
