@@ -14,7 +14,7 @@ const DRY_RUN = process.env.DRY_RUN === '1';
 const TEST_NOTIFICATION = process.env.TEST_NOTIFICATION === 'true';
 const TWEET_NOW = process.env.TWEET_NOW === 'true';
 const X_CREDS = credentials(); // null until the four X_* secrets are added
-const TWEETED = new Set(['open', 'closing']); // alert kinds that are also posted to X
+const TWEETED = new Set(['announced', 'open', 'closing']); // alert kinds that are also posted to X
 const DAY = 86_400_000;
 
 const today = () => new Date().toISOString().slice(0, 10);

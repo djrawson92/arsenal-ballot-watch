@@ -43,7 +43,7 @@ When a ballot opens, the monitor can also tweet it from an X account, for exampl
 
 The matchday hashtag (#ARSMUN, or #MUNARS away) uses the club codes in `src/ballots.mjs`. A club missing from that list just gets no match tag.
 
-It also tweets a "Last chance" reminder when a ballot has 12 hours left, at the same time as your closing-soon push. Tweets carry no web address. X turns anything that looks like one into a link, and a post with a link costs about $0.20 instead of about $0.015. Tweeting stays off until all four X secrets below are set.
+It also tweets "Ballot coming" when the club publishes a ballot's dates before it opens, and a "Last chance" reminder when a ballot has 12 hours left, at the same time as the matching phone pushes. Tweets carry no web address. X turns anything that looks like one into a link, and a post with a link costs about $0.20 instead of about $0.015. Tweeting stays off until all four X secrets below are set.
 
 1. **Make the account.** Make it obviously unofficial: no club crest or club photos, and a name such as "AFC Ballot Alerts (unofficial)". In the bio, say it's automated and who runs it, e.g. "Unofficial, automated alerts when Arsenal ticket ballots open. Run by @yourname. Not affiliated with Arsenal FC."
 2. **Label it as automated.** On the bot account, go to **Settings → Your account → Account information → Automation** and link it to your personal account. X's rules require this.

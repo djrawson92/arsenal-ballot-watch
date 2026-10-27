@@ -102,3 +102,13 @@ test('closing-soon tweet leads with the deadline, saying "today" on the day', ()
   assert.match(tweetText(b, 'closing', at('2026-10-25T23:30Z')), /Closes Mon 26 Oct(,| at) 12:00 UK time/); // still Sunday in the UK
   assert.notEqual(tweetText(b, 'closing'), tweetText(b, 'open')); // X rejects exact duplicates
 });
+
+test('announced tweet gives the opening time, or says it is to be confirmed', () => {
+  const b = { ...manUtd, status: 'comingSoon', competition: 'Premier League' };
+  const text = tweetText(b, 'announced');
+  assert.match(text, /^🗓️ Ballot coming: Arsenal v Manchester United\nOpens Fri 23 Oct(,| at) 11:00 UK time\nCloses Mon 26 Oct(,| at) 12:00 UK time\nKick-off Sun 20 Dec(,| at) 16:30 \(Premier League\)\n\n#ARSMUN #Arsenal #COYG$/);
+  assert.equal([...text.matchAll(/\p{Extended_Pictographic}/gu)].length, 1, 'one emoji only');
+  assert.match(tweetText({ ...b, opens: null }, 'announced'), /\nOpening date to be confirmed\n/);
+  assert.equal(new Set(['announced', 'open', 'closing'].map((k) => tweetText(b, k))).size, 3); // never duplicates
+});
+

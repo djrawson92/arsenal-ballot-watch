@@ -104,7 +104,7 @@ export function message(kind, ballot) {
   }
 }
 
-// Public tweet when a ballot opens or is about to close. No web address: X turns
+// Public tweet when a ballot is announced, opens or is about to close. No web address: X turns
 // anything that looks like one into a link, and posts with links cost about 13 times as much.
 // Few hashtags: the matchday tag fans search (#ARSMUN), then two club tags.
 export function tweetText(ballot, kind = 'open', now = new Date()) {
@@ -113,10 +113,17 @@ export function tweetText(ballot, kind = 'open', now = new Date()) {
   const code = ballot.opponentCode;
   const matchTag = code ? `#${ballot.home ? `ARS${code}` : `${code}ARS`} ` : '';
   const ko = kickoff && `Kick-off ${formatUk(kickoff)}${ballot.competition ? ` (${ballot.competition})` : ''}`;
-  const lines =
-    kind === 'closing'
-      ? [`⏰ Last chance: ${ballot.title} ballot`, closes && `Closes ${closesWhen(closes, now)} UK time`, ko]
-      : [`🚨 Ballot now open: ${ballot.title}`, ko, closes && `Closes ${formatUk(closes)} UK time`];
+  const opens = ukTime(ballot.opens);
+  const lines = {
+    announced: [
+      `🗓️ Ballot coming: ${ballot.title}`,
+      opens ? `Opens ${formatUk(opens)} UK time` : 'Opening date to be confirmed',
+      closes && `Closes ${formatUk(closes)} UK time`,
+      ko,
+    ],
+    open: [`🚨 Ballot now open: ${ballot.title}`, ko, closes && `Closes ${formatUk(closes)} UK time`],
+    closing: [`⏰ Last chance: ${ballot.title} ballot`, closes && `Closes ${closesWhen(closes, now)} UK time`, ko],
+  }[kind];
   return [lines.filter(Boolean).join('\n'), `${matchTag}#Arsenal #COYG`].join('\n\n');
 }
 
