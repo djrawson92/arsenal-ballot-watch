@@ -41,7 +41,9 @@ export function toBallot(fixture) {
   const details = fixture.customTypeData?.fixtureDetails ?? {};
   const ticketing = fixture.customTypeData?.metaData?.fixtureTicketing ?? {};
   const status = String(ticketing.ballot ?? '').trim();
-  if (NO_BALLOT.has(status.toLowerCase())) return null;
+  // The club publishes the dates before it changes the status from "notAvailable"
+  // (seen for Arsenal v Ipswich, 30 Oct 2026), so dates alone mean there's a ballot.
+  if (NO_BALLOT.has(status.toLowerCase()) && !ticketing.ballotOpenDate) return null;
 
   const opponent = details.opponent?.name ?? 'TBC';
   const team = TEAM_NAMES[details.arsenalTeam?.slug] ?? details.arsenalTeam?.slug ?? '';

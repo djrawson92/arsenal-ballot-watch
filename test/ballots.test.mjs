@@ -112,3 +112,20 @@ test('announced tweet gives the opening time, or says it is to be confirmed', ()
   assert.equal(new Set(['announced', 'open', 'closing'].map((k) => tweetText(b, k))).size, 3); // never duplicates
 });
 
+test('dates published while the status still says notAvailable count as an announced ballot', () => {
+  // Real shape from 30 Oct 2026 (Arsenal v Ipswich).
+  const fixture = {
+    id: 11444,
+    customTypeData: {
+      fixtureDetails: { arsenalTeam: { slug: 'men' }, fixtureDate: '2027-01-02T15:00', opponent: { name: 'Ipswich Town' }, venueType1: 'home' },
+      metaData: { fixtureTicketing: { ballot: 'notAvailable', ballotOpenDate: '2026-11-06T12:00', ballotCloseDate: '2026-11-09T12:00' } },
+    },
+  };
+  const b = toBallot(fixture);
+  assert.equal(b.title, 'Arsenal v Ipswich Town');
+  assert.equal(phase(b, at('2026-10-30T14:00Z')), 'upcoming');
+  assert.deepEqual(alertsFor(b, [], at('2026-10-30T14:00Z')), ['announced']);
+  assert.equal(phase(b, at('2026-11-06T12:00Z')), 'open'); // dates win even if the status is never updated
+  assert.equal(toBallot({ ...fixture, customTypeData: { ...fixture.customTypeData, metaData: { fixtureTicketing: { ballot: 'notAvailable' } } } }), null);
+});
+
