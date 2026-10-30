@@ -46,6 +46,23 @@
       "opponentCode": "BOU",
       "competition": "Premier League"
     },
+    "11444": {
+      "firstSeen": "2026-10-30",
+      "sent": [
+        "announced"
+      ],
+      "id": "11444",
+      "title": "Arsenal v Ipswich Town",
+      "home": true,
+      "opponentCode": "IPS",
+      "competition": "Premier League",
+      "kickoff": "2027-01-02T15:00",
+      "status": "notAvailable",
+      "opens": "2026-11-06T12:00",
+      "closes": "2026-11-09T12:00",
+      "link": "https://www.eticketing.co.uk/arsenal/",
+      "phase": "upcoming"
+    },
     "11452": {
       "firstSeen": "2026-10-25",
       "sent": [
