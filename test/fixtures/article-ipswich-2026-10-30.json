@@ -1,0 +1,451 @@
+[
+ {
+  "tagName": "P",
+  "innerText": "",
+  "type": "TEXT",
+  "childNodes": [
+   {
+    "tagName": "STRONG",
+    "innerText": "Ballot price range",
+    "type": "TEXT",
+    "attributes": {
+     "id": "eglaPfjW_ws"
+    },
+    "childNodes": []
+   },
+   {
+    "tagName": "BR",
+    "innerText": "",
+    "type": "TEXT",
+    "attributes": {
+     "id": "e_lHbDeZ3Zu"
+    },
+    "childNodes": []
+   },
+   {
+    "tagName": "TEXT",
+    "innerText": " £31.80 - £59.00",
+    "type": "TEXT",
+    "attributes": {},
+    "childNodes": []
+   }
+  ],
+  "html": "<p><strong id=\"eglaPfjW_ws\">Ballot price range</strong><br id=\"e_lHbDeZ3Zu\"></br> £31.80 - £59.00</p>"
+ },
+ {
+  "tagName": "P",
+  "innerText": "",
+  "type": "TEXT",
+  "childNodes": [
+   {
+    "tagName": "STRONG",
+    "innerText": "Ballots open: Friday, November 6, 12pm",
+    "type": "TEXT",
+    "attributes": {
+     "id": "eqRBBKpQKGkf"
+    },
+    "childNodes": []
+   },
+   {
+    "tagName": "BR",
+    "innerText": "",
+    "type": "TEXT",
+    "attributes": {
+     "id": "eT4c7XmhpBm2"
+    },
+    "childNodes": []
+   },
+   {
+    "tagName": "STRONG",
+    "innerText": "Ballots close:",
+    "type": "TEXT",
+    "attributes": {
+     "id": "e7xV8FxDRJI8"
+    },
+    "childNodes": []
+   },
+   {
+    "tagName": "TEXT",
+    "innerText": " ",
+    "type": "TEXT",
+    "attributes": {},
+    "childNodes": []
+   },
+   {
+    "tagName": "STRONG",
+    "innerText": "Monday, November 9, 12pm",
+    "type": "TEXT",
+    "attributes": {
+     "id": "eP6RK8V_fcDv"
+    },
+    "childNodes": []
+   }
+  ],
+  "html": "<p><strong id=\"eqRBBKpQKGkf\">Ballots open: Friday, November 6, 12pm</strong><br id=\"eT4c7XmhpBm2\"></br><strong id=\"e7xV8FxDRJI8\">Ballots close:</strong> <strong id=\"eP6RK8V_fcDv\">Monday, November 9, 12pm</strong></p>"
+ },
+ {
+  "type": "TABLE",
+  "tableHead": [
+   [
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "eMsbGZCIf5u"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "Ballot Group",
+       "type": "TEXT",
+       "attributes": {
+        "id": "e__VPjzIQzY"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"e__VPjzIQzY\">Ballot Group</p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "eAI5bTwyGTq"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "",
+       "type": "TEXT",
+       "attributes": {
+        "id": "eYL8Y1dAiKe"
+       },
+       "childNodes": [
+        {
+         "tagName": "STRONG",
+         "innerText": "Purchase window opens",
+         "type": "TEXT",
+         "attributes": {
+          "id": "eLRNGjyh95qc"
+         },
+         "childNodes": []
+        }
+       ]
+      }
+     ],
+     "html": "<p id=\"eYL8Y1dAiKe\"><strong id=\"eLRNGjyh95qc\">Purchase window opens</strong></p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "ekH6Se1k9cr"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "",
+       "type": "TEXT",
+       "attributes": {
+        "id": "eccegavpEmA"
+       },
+       "childNodes": [
+        {
+         "tagName": "STRONG",
+         "innerText": "Successful applicants charged",
+         "type": "TEXT",
+         "attributes": {
+          "id": "eQjCHiwz6wQs"
+         },
+         "childNodes": []
+        }
+       ]
+      }
+     ],
+     "html": "<p id=\"eccegavpEmA\"><strong id=\"eQjCHiwz6wQs\">Successful applicants charged</strong></p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "edx6ILkgWw6"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "",
+       "type": "TEXT",
+       "attributes": {
+        "id": "eoQQ-iRuJy7"
+       },
+       "childNodes": [
+        {
+         "tagName": "STRONG",
+         "innerText": "Ballot status",
+         "type": "TEXT",
+         "attributes": {
+          "id": "e5jV5amnwqwz"
+         },
+         "childNodes": []
+        }
+       ]
+      }
+     ],
+     "html": "<p id=\"eoQQ-iRuJy7\"><strong id=\"e5jV5amnwqwz\">Ballot status</strong></p>"
+    }
+   ]
+  ],
+  "tableData": [
+   [
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "ePE5PJDs5nT"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "Disability Access",
+       "type": "TEXT",
+       "attributes": {
+        "id": "eFrxTFw3uR0"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"eFrxTFw3uR0\">Disability Access</p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "e_-FAoFgXB3"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "November 11, 10 am",
+       "type": "TEXT",
+       "attributes": {
+        "id": "e40RsBv3FT4"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"e40RsBv3FT4\">November 11, 10 am</p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "e_Qp_MvTdlv7"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "✘",
+       "type": "TEXT",
+       "attributes": {
+        "id": "eWu8qQDtxY9X"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"eWu8qQDtxY9X\">✘</p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "egX1jyJjUXIw"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "Closed",
+       "type": "TEXT",
+       "attributes": {
+        "id": "eSJIXw0EPPFh"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"eSJIXw0EPPFh\">Closed</p>"
+    }
+   ],
+   [
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "eZewO0ZEoeC6"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "Silver",
+       "type": "TEXT",
+       "attributes": {
+        "id": "eQ1XjIdwTbdS"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"eQ1XjIdwTbdS\">Silver</p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "e4KwF_qzL4ix"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "✘",
+       "type": "TEXT",
+       "attributes": {
+        "id": "e2gwrpuTSOcQ"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"e2gwrpuTSOcQ\">✘</p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "eEEJ5NhLkL95"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "November 12 (approx.)",
+       "type": "TEXT",
+       "attributes": {
+        "id": "e4lUxE3jK1-I"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"e4lUxE3jK1-I\">November 12 (approx.)</p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "eBlX9o1CqxoA"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "Closed",
+       "type": "TEXT",
+       "attributes": {
+        "id": "eRFSv3k6AfLX"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"eRFSv3k6AfLX\">Closed</p>"
+    }
+   ],
+   [
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "emB-ufvjVUjK"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "Red",
+       "type": "TEXT",
+       "attributes": {
+        "id": "efebhtT7mywl"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"efebhtT7mywl\">Red</p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "eVC-hJx9mBSg"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "✘",
+       "type": "TEXT",
+       "attributes": {
+        "id": "ecRNVefUf2ye"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"ecRNVefUf2ye\">✘</p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "e22tVyoX1jVL"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "November 17 (approx.)",
+       "type": "TEXT",
+       "attributes": {
+        "id": "eG6vQl1IyM_w"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"eG6vQl1IyM_w\">November 17 (approx.)</p>"
+    },
+    {
+     "tagName": "TD",
+     "innerText": "",
+     "type": "TEXT",
+     "attributes": {
+      "id": "emcKiPX42PvD"
+     },
+     "childNodes": [
+      {
+       "tagName": "P",
+       "innerText": "Closed",
+       "type": "TEXT",
+       "attributes": {
+        "id": "eW5caWLv8lCw"
+       },
+       "childNodes": []
+      }
+     ],
+     "html": "<p id=\"eW5caWLv8lCw\">Closed</p>"
+    }
+   ]
+  ]
+ }
+]

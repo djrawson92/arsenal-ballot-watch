@@ -1,8 +1,8 @@
 // One check: read Arsenal's fixtures, compare ballots with state.json, and push a
 // phone notification for each ballot that's newly announced, newly open or about to close.
 import { readFile, writeFile } from 'node:fs/promises';
-import { fetchFixtures } from './api.mjs';
-import { alertsFor, CLOSING_SOON_HOURS, formatUk, message, phase, toBallot, tweetText, ukTime } from './ballots.mjs';
+import { fetchFixtures, fetchTicketArticle } from './api.mjs';
+import { alertsFor, CLOSING_SOON_HOURS, formatUk, message, parseTicketArticle, phase, toBallot, tweetText, ukTime } from './ballots.mjs';
 import { notify } from './notify.mjs';
 import { credentials, keyHints, postTweet, whoAmI } from './x.mjs';
 
@@ -30,6 +30,17 @@ async function loadState() {
 async function send(alert) {
   if (DRY_RUN) return console.log('[dry run] would notify:', JSON.stringify(alert));
   await notify(alert);
+}
+
+// Price range and results dates from the match's ticket article. Only fetched when an
+// alert is about to go out; if anything fails, the alert just goes without them.
+async function addTicketInfo(ballot) {
+  try {
+    const body = await fetchTicketArticle(ballot.id);
+    if (body) Object.assign(ballot, parseTicketArticle(body));
+  } catch (err) {
+    console.warn(`no ticket info for ${ballot.title}: ${err.message}`);
+  }
 }
 
 // A failed tweet is reported to the phone but never stops the check or the phone alert.
@@ -82,6 +93,7 @@ async function main() {
     const open = ballots.filter((b) => phase(b, now) === 'open');
     if (!open.length) console.log('no open ballots to tweet');
     for (const b of open) {
+      await addTicketInfo(b);
       const closes = ukTime(b.closes);
       await tweet(b, closes && closes - now <= CLOSING_SOON_HOURS * 3_600_000 ? 'closing' : 'open');
     }
@@ -115,6 +127,7 @@ async function main() {
     const entry = (known[ballot.id] ??= { firstSeen: today(), sent: [] });
     const due = alertsFor(ballot, entry.sent, now);
     Object.assign(entry, ballot, { phase: phase(ballot, now) });
+    if (due.length && !firstRun) await addTicketInfo(ballot);
     for (const kind of due) {
       if (!firstRun) {
         console.log(`${kind}: ${ballot.title}`);

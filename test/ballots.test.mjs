@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { alertsFor, message, phase, toBallot, tweetText, ukTime } from '../src/ballots.mjs';
+import { alertsFor, message, parseTicketArticle, phase, toBallot, tweetText, ukTime } from '../src/ballots.mjs';
 
 // Real API response from 25 Oct 2026, trimmed to five fixtures.
 const api = JSON.parse(readFileSync(new URL('./fixtures/api-2026-10-25.json', import.meta.url)));
@@ -127,5 +127,26 @@ test('dates published while the status still says notAvailable count as an annou
   assert.deepEqual(alertsFor(b, [], at('2026-10-30T14:00Z')), ['announced']);
   assert.equal(phase(b, at('2026-11-06T12:00Z')), 'open'); // dates win even if the status is never updated
   assert.equal(toBallot({ ...fixture, customTypeData: { ...fixture.customTypeData, metaData: { fixtureTicketing: { ballot: 'notAvailable' } } } }), null);
+});
+
+// Real ticket-article nodes for Arsenal v Ipswich, 30 Oct 2026 (price paragraph and status table).
+const ipswichArticle = JSON.parse(readFileSync(new URL('./fixtures/article-ipswich-2026-10-30.json', import.meta.url)));
+
+test('reads the price range and Silver/Red results dates from the ticket article', () => {
+  assert.deepEqual(parseTicketArticle(ipswichArticle), { priceRange: '£31.80 – £59.00', results: { Silver: '12 Nov', Red: '17 Nov' } });
+  assert.deepEqual(parseTicketArticle([]), { priceRange: null, results: {} });
+});
+
+test('price and results lines appear in announced and open tweets, not the last-chance one', () => {
+  const b = { ...manUtd, competition: 'Premier League', ...parseTicketArticle(ipswichArticle) };
+  for (const kind of ['announced', 'open']) {
+    const text = tweetText(b, kind);
+    assert.match(text, /\nPrices £31\.80 – £59\.00\nResults: Silver 12 Nov · Red 17 Nov\n\n#ARSMUN/);
+    assert.equal([...text.matchAll(/\p{Extended_Pictographic}/gu)].length, 1, 'one emoji only');
+    assert.ok([...text].length <= 280);
+  }
+  assert.doesNotMatch(tweetText(b, 'closing'), /Prices|Results/);
+  assert.match(message('open', b).message, /Prices £31\.80 – £59\.00\nResults: Silver 12 Nov · Red 17 Nov$/);
+  assert.doesNotMatch(tweetText(manUtd, 'open'), /Prices|Results/); // nothing found, nothing shown
 });
 

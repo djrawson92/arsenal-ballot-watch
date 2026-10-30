@@ -41,6 +41,8 @@ When a ballot opens, the monitor can also tweet it from an X account, for exampl
 >
 > #ARSMUN #Arsenal #COYG
 
+Announced and open tweets (and their phone pushes) also show the price range and the Silver/Red results dates, e.g. `Prices £31.80 – £59.00` and `Results: Silver 12 Nov · Red 17 Nov`. These come from the match's "Ticket information" article, fetched through the same API only when an alert is going out (`fetchTicketArticle` in `src/api.mjs`, `parseTicketArticle` in `src/ballots.mjs`). If the article is missing or changes shape, the alert goes out without them.
+
 The matchday hashtag (#ARSMUN, or #MUNARS away) uses the club codes in `src/ballots.mjs`. A club missing from that list just gets no match tag.
 
 It also tweets "Ballot coming" when the club publishes a ballot's dates before it opens, and a "Last chance" reminder when a ballot has 12 hours left, at the same time as the matching phone pushes. Tweets carry no web address. X turns anything that looks like one into a link, and a post with a link costs about $0.20 instead of about $0.015. Tweeting stays off until all four X secrets below are set.

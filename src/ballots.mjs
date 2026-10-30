@@ -95,12 +95,17 @@ export function message(kind, ballot) {
     case 'announced':
       return {
         title: `Ballot coming: ${ballot.title}`,
-        message: [`${match}`, opens ? `Opens ${formatUk(opens)}.` : 'Opening date not announced yet.', until].filter(Boolean).join('\n'),
+        message: [`${match}`, opens ? `Opens ${formatUk(opens)}.` : 'Opening date not announced yet.', until, ...extrasLine(ballot)].filter(Boolean).join('\n'),
         tags: ['soccer', 'calendar'],
         priority: 4,
       };
     case 'open':
-      return { title: `Ballot OPEN: ${ballot.title}`, message: `${match}\n${until} Tap to apply.`.trim(), tags: ['soccer', 'ticket'], priority: 5 };
+      return {
+        title: `Ballot OPEN: ${ballot.title}`,
+        message: [match, `${until} Tap to apply.`.trim(), ...extrasLine(ballot)].join('\n'),
+        tags: ['soccer', 'ticket'],
+        priority: 5,
+      };
     case 'closing':
       return { title: `Ballot closing soon: ${ballot.title}`, message: `${match}\n${until} Apply now if you haven’t.`, tags: ['soccer', 'hourglass'], priority: 5 };
   }
@@ -122,8 +127,9 @@ export function tweetText(ballot, kind = 'open', now = new Date()) {
       opens ? `Opens ${formatUk(opens)} UK time` : 'Opening date to be confirmed',
       closes && `Closes ${formatUk(closes)} UK time`,
       ko,
+      ...extrasLine(ballot),
     ],
-    open: [`🚨 Ballot now open: ${ballot.title}`, ko, closes && `Closes ${formatUk(closes)} UK time`],
+    open: [`🚨 Ballot now open: ${ballot.title}`, ko, closes && `Closes ${formatUk(closes)} UK time`, ...extrasLine(ballot)],
     closing: [`⏰ Last chance: ${ballot.title} ballot`, closes && `Closes ${closesWhen(closes, now)} UK time`, ko],
   }[kind];
   return [lines.filter(Boolean).join('\n'), `${matchTag}#Arsenal #COYG`].join('\n\n');
@@ -134,4 +140,44 @@ function closesWhen(closes, now) {
   const day = (d) => d.toLocaleDateString('en-GB', { timeZone: 'Europe/London' });
   if (day(closes) !== day(now)) return formatUk(closes);
   return `today at ${closes.toLocaleTimeString('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit' })}`;
+}
+
+// Price range and Silver/Red results dates from the match's ticket article, e.g.
+// "Ballot price range £31.80 - £59.00" and the status table's "Successful applicants
+// charged" column ("November 12 (approx.)"). Anything missing is just left out.
+export function parseTicketArticle(body) {
+  const text = (html) => String(html ?? '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+  const nodes = [];
+  (function walk(n) {
+    if (Array.isArray(n)) return n.forEach(walk);
+    if (n && typeof n === 'object') {
+      if (n.type === 'TABLE' || n.tagName === 'P') nodes.push(n);
+      for (const k in n) if (k !== 'tableHead' && k !== 'tableData') walk(n[k]);
+    }
+  })(body);
+
+  let priceRange = null;
+  for (const n of nodes) {
+    const m = n.tagName === 'P' && text(n.html).match(/Ballot price range\s*(£[\d.,]+)\s*[-–]\s*(£[\d.,]+)/i);
+    if (m) { priceRange = `${m[1]} – ${m[2]}`; break; }
+  }
+
+  const results = {};
+  for (const table of nodes.filter((n) => n.type === 'TABLE')) {
+    const head = (table.tableHead?.[0] ?? []).map((c) => text(c?.html));
+    const col = head.findIndex((h) => /charged|result/i.test(h));
+    if (col < 0) continue;
+    for (const row of table.tableData ?? []) {
+      const group = text(row[0]?.html);
+      const date = text(row[col]?.html).match(/([A-Z][a-z]+) (\d{1,2})/);
+      if (/^(silver|red)$/i.test(group) && date) results[group[0].toUpperCase() + group.slice(1).toLowerCase()] = `${date[2]} ${date[1].slice(0, 3)}`;
+    }
+  }
+  return { priceRange, results };
+}
+
+function extrasLine(ballot) {
+  const r = ballot.results ?? {};
+  const results = ['Silver', 'Red'].filter((g) => r[g]).map((g) => `${g} ${r[g]}`).join(' · ');
+  return [ballot.priceRange && `Prices ${ballot.priceRange}`, results && `Results: ${results}`].filter(Boolean);
 }
