@@ -5,6 +5,71 @@
   "type": "TEXT",
   "childNodes": [
    {
+    "tagName": "TEXT",
+    "innerText": "This will be a Category C fixture (",
+    "type": "TEXT",
+    "attributes": {},
+    "childNodes": []
+   },
+   {
+    "tagName": "A",
+    "innerText": "pricing",
+    "type": "TEXT",
+    "attributes": {
+     "href": "https://www.arsenal.com/news/2026-27-member-match-pricing-aTjal5t7as4k",
+     "id": "eDqibDRn4sw"
+    },
+    "childNodes": [
+     {
+      "tagName": "TEXT",
+      "innerText": "pricing",
+      "type": "TEXT",
+      "attributes": {},
+      "childNodes": []
+     }
+    ]
+   },
+   {
+    "tagName": "TEXT",
+    "innerText": " and information on ",
+    "type": "TEXT",
+    "attributes": {},
+    "childNodes": []
+   },
+   {
+    "tagName": "A",
+    "innerText": "match categorisation",
+    "type": "TEXT",
+    "attributes": {
+     "href": "https://www.arsenal.com/tickets/matchcategories",
+     "id": "e0kAQvtylJr"
+    },
+    "childNodes": [
+     {
+      "tagName": "TEXT",
+      "innerText": "match categorisation",
+      "type": "TEXT",
+      "attributes": {},
+      "childNodes": []
+     }
+    ]
+   },
+   {
+    "tagName": "TEXT",
+    "innerText": ").",
+    "type": "TEXT",
+    "attributes": {},
+    "childNodes": []
+   }
+  ],
+  "html": "<p>This will be a Category C fixture (<a href=\"https://www.arsenal.com/news/2026-27-member-match-pricing-aTjal5t7as4k\" id=\"eDqibDRn4sw\">pricing</a> and information on <a href=\"https://www.arsenal.com/tickets/matchcategories\" id=\"e0kAQvtylJr\">match categorisation</a>).</p>"
+ },
+ {
+  "tagName": "P",
+  "innerText": "",
+  "type": "TEXT",
+  "childNodes": [
+   {
     "tagName": "STRONG",
     "innerText": "Ballot price range",
     "type": "TEXT",

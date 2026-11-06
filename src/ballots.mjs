@@ -111,35 +111,48 @@ export function message(kind, ballot) {
   }
 }
 
-// Public tweet when a ballot is announced, opens or is about to close. No web address: X turns
-// anything that looks like one into a link, and posts with links cost about 13 times as much.
-// Few hashtags: the matchday tag fans search (#ARSMUN), then two club tags.
+// Public tweet when a ballot is announced, opens or is about to close: a headline, then one
+// fact per line, each with a small icon so it scans at a glance. No 📅: it always shows
+// "JUL 17". No web address: X turns anything that looks like one into a link, and posts
+// with links cost about 13 times as much. Few hashtags: the matchday tag (#ARSMUN) and two club tags.
 export function tweetText(ballot, kind = 'open', now = new Date()) {
   const kickoff = ukTime(ballot.kickoff);
+  const opens = ukTime(ballot.opens);
   const closes = ukTime(ballot.closes);
   const code = ballot.opponentCode;
   const matchTag = code ? `#${ballot.home ? `ARS${code}` : `${code}ARS`} ` : '';
-  const ko = kickoff && `Kick-off ${formatUk(kickoff)}${ballot.competition ? ` (${ballot.competition})` : ''}`;
-  const opens = ukTime(ballot.opens);
-  const lines = {
+  const ko = kickoff && `⚽ ${friendly(kickoff)}${ballot.competition ? ` · ${ballot.competition}` : ''}`;
+  const price = ballot.priceRange && `💷 ${ballot.priceRange.replace(' – ', '–')}${ballot.category ? ` · Category ${ballot.category}` : ''}`;
+  const r = ballot.results ?? {};
+  const results = ['Silver', 'Red'].filter((g) => r[g]).map((g) => `${g} ${r[g]}`).join(' · ');
+  const res = results && `📬 Results: ${results}`;
+
+  const [headline, ...facts] = {
     announced: [
-      `🗓️ Ballot coming: ${ballot.title}`,
-      opens ? `Opens ${formatUk(opens)} UK time` : 'Opening date to be confirmed',
-      closes && `Closes ${formatUk(closes)} UK time`,
-      ko,
-      ...extrasLine(ballot),
+      `📢 Ballot dates are out: ${ballot.title}`,
+      opens ? `🟢 Opens ${friendly(opens)}` : '🟢 Opening date to be confirmed',
+      closes && `⏳ Closes ${friendly(closes)}`,
+      ko, price, res,
     ],
-    open: [`🚨 Ballot now open: ${ballot.title}`, ko, closes && `Closes ${formatUk(closes)} UK time`, ...extrasLine(ballot)],
-    closing: [`⏰ Last chance: ${ballot.title} ballot`, closes && `Closes ${closesWhen(closes, now)} UK time`, ko],
+    open: [`🚨 Ballot OPEN: ${ballot.title}`, closes && `⏳ Closes ${friendly(closes)}`, ko, price, res],
+    closing: [`⏰ Last chance: ${ballot.title}`, closes && `⏳ Ballot closes ${closesWhen(closes, now)}`, ko, price],
   }[kind];
-  return [lines.filter(Boolean).join('\n'), `${matchTag}#Arsenal #COYG`].join('\n\n');
+  return [headline, facts.filter(Boolean).join('\n'), `${matchTag}#Arsenal #COYG`].join('\n\n');
 }
 
-// "today at 12:00" when it closes on the same UK day, else the full date.
+// "Sat 2 Jan, 3pm" / "Mon 9 Nov, 7:45pm": how fans write times, always UK time.
+export function friendly(date) {
+  const part = (o) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', ...o }).format(date);
+  const day = part({ weekday: 'short', day: 'numeric', month: 'short' });
+  const [h, m] = part({ hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).split(':').map(Number);
+  const time = `${h % 12 || 12}${m ? `:${String(m).padStart(2, '0')}` : ''}${h < 12 ? 'am' : 'pm'}`;
+  return `${day}, ${time}`;
+}
+
+// "today, 12pm" when it closes on the same UK day, else the full date.
 function closesWhen(closes, now) {
   const day = (d) => d.toLocaleDateString('en-GB', { timeZone: 'Europe/London' });
-  if (day(closes) !== day(now)) return formatUk(closes);
-  return `today at ${closes.toLocaleTimeString('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit' })}`;
+  return day(closes) === day(now) ? `today, ${friendly(closes).split(', ')[1]}` : friendly(closes);
 }
 
 // Price range and Silver/Red results dates from the match's ticket article, e.g.
@@ -155,6 +168,12 @@ export function parseTicketArticle(body) {
       for (const k in n) if (k !== 'tableHead' && k !== 'tableData') walk(n[k]);
     }
   })(body);
+
+  let category = null;
+  for (const n of nodes) {
+    const m = n.tagName === 'P' && text(n.html).match(/\bCategory ([A-C])\b/);
+    if (m) { category = m[1]; break; }
+  }
 
   let priceRange = null;
   for (const n of nodes) {
@@ -173,7 +192,7 @@ export function parseTicketArticle(body) {
       if (/^(silver|red)$/i.test(group) && date) results[group[0].toUpperCase() + group.slice(1).toLowerCase()] = `${date[2]} ${date[1].slice(0, 3)}`;
     }
   }
-  return { priceRange, results };
+  return { priceRange, category, results };
 }
 
 function extrasLine(ballot) {

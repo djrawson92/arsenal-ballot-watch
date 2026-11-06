@@ -35,11 +35,14 @@ A successful call returns 204. Extra runs are harmless: they queue one at a time
 
 When a ballot opens, the monitor can also tweet it from an X account, for example:
 
-> 🚨 Ballot now open: Arsenal v Manchester United
-> Kick-off Sun 20 Dec, 16:30 (Premier League)
-> Closes Mon 26 Oct, 12:00 UK time
+> 🚨 Ballot OPEN: Arsenal v Ipswich Town
 >
-> #ARSMUN #Arsenal #COYG
+> ⏳ Closes Mon 9 Nov, 12pm
+> ⚽ Sat 2 Jan, 3pm · Premier League
+> 💷 £31.80–£59.00 · Category C
+> 📬 Results: Silver 12 Nov · Red 17 Nov
+>
+> #ARSIPS #Arsenal #COYG
 
 Announced and open tweets (and their phone pushes) also show the price range and the Silver/Red results dates, e.g. `Prices £31.80 – £59.00` and `Results: Silver 12 Nov · Red 17 Nov`. These come from the match's "Ticket information" article, fetched through the same API only when an alert is going out (`fetchTicketArticle` in `src/api.mjs`, `parseTicketArticle` in `src/ballots.mjs`). If the article is missing or changes shape, the alert goes out without them.
 

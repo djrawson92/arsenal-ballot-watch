@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { alertsFor, message, parseTicketArticle, phase, toBallot, tweetText, ukTime } from '../src/ballots.mjs';
+import { alertsFor, friendly, message, parseTicketArticle, phase, toBallot, tweetText, ukTime } from '../src/ballots.mjs';
 
 // Real API response from 25 Oct 2026, trimmed to five fixtures.
 const api = JSON.parse(readFileSync(new URL('./fixtures/api-2026-10-25.json', import.meta.url)));
@@ -83,33 +83,9 @@ test('messages show UK times', () => {
   assert.match(m.message, /Closes Mon 26 Oct(,| at) 12:00/);
 });
 
-test('tweet has the match, kick-off, closing time and matchday hashtag, and no web address', () => {
-  const text = tweetText({ ...manUtd, competition: 'Premier League' });
-  assert.match(text, /^🚨 Ballot now open: Arsenal v Manchester United\nKick-off Sun 20 Dec(,| at) 16:30 \(Premier League\)\nCloses Mon 26 Oct(,| at) 12:00 UK time\n\n#ARSMUN #Arsenal #COYG$/);
-  assert.equal([...text.matchAll(/\p{Extended_Pictographic}/gu)].length, 1, 'one emoji only');
-  assert.doesNotMatch(text, /https?:|www\.|\.co\.uk|\.com|ticketing site/);
-  assert.ok([...text].length <= 280);
-});
-
 test('away hashtag puts the home side first; unknown clubs get no match tag', () => {
   assert.match(tweetText({ ...manUtd, home: false, title: 'Manchester United v Arsenal' }), /#MUNARS #Arsenal/);
   assert.match(tweetText({ ...manUtd, opponentCode: null }), /\n\n#Arsenal #COYG$/);
-});
-
-test('closing-soon tweet leads with the deadline, saying "today" on the day', () => {
-  const b = { ...manUtd, competition: 'Premier League' };
-  assert.match(tweetText(b, 'closing', at('2026-10-26T01:00Z')), /^⏰ Last chance: Arsenal v Manchester United ballot\nCloses today at 12:00 UK time\nKick-off Sun 20 Dec(,| at) 16:30 \(Premier League\)\n\n#ARSMUN #Arsenal #COYG$/);
-  assert.match(tweetText(b, 'closing', at('2026-10-25T23:30Z')), /Closes Mon 26 Oct(,| at) 12:00 UK time/); // still Sunday in the UK
-  assert.notEqual(tweetText(b, 'closing'), tweetText(b, 'open')); // X rejects exact duplicates
-});
-
-test('announced tweet gives the opening time, or says it is to be confirmed', () => {
-  const b = { ...manUtd, status: 'comingSoon', competition: 'Premier League' };
-  const text = tweetText(b, 'announced');
-  assert.match(text, /^🗓️ Ballot coming: Arsenal v Manchester United\nOpens Fri 23 Oct(,| at) 11:00 UK time\nCloses Mon 26 Oct(,| at) 12:00 UK time\nKick-off Sun 20 Dec(,| at) 16:30 \(Premier League\)\n\n#ARSMUN #Arsenal #COYG$/);
-  assert.equal([...text.matchAll(/\p{Extended_Pictographic}/gu)].length, 1, 'one emoji only');
-  assert.match(tweetText({ ...b, opens: null }, 'announced'), /\nOpening date to be confirmed\n/);
-  assert.equal(new Set(['announced', 'open', 'closing'].map((k) => tweetText(b, k))).size, 3); // never duplicates
 });
 
 test('dates published while the status still says notAvailable count as an announced ballot', () => {
@@ -133,20 +109,69 @@ test('dates published while the status still says notAvailable count as an annou
 const ipswichArticle = JSON.parse(readFileSync(new URL('./fixtures/article-ipswich-2026-10-30.json', import.meta.url)));
 
 test('reads the price range and Silver/Red results dates from the ticket article', () => {
-  assert.deepEqual(parseTicketArticle(ipswichArticle), { priceRange: '£31.80 – £59.00', results: { Silver: '12 Nov', Red: '17 Nov' } });
-  assert.deepEqual(parseTicketArticle([]), { priceRange: null, results: {} });
+  assert.deepEqual(parseTicketArticle(ipswichArticle), { priceRange: '£31.80 – £59.00', category: 'C', results: { Silver: '12 Nov', Red: '17 Nov' } });
+  assert.deepEqual(parseTicketArticle([]), { priceRange: null, category: null, results: {} });
 });
 
-test('price and results lines appear in announced and open tweets, not the last-chance one', () => {
-  const b = { ...manUtd, competition: 'Premier League', ...parseTicketArticle(ipswichArticle) };
-  for (const kind of ['announced', 'open']) {
-    const text = tweetText(b, kind);
-    assert.match(text, /\nPrices £31\.80 – £59\.00\nResults: Silver 12 Nov · Red 17 Nov\n\n#ARSMUN/);
-    assert.equal([...text.matchAll(/\p{Extended_Pictographic}/gu)].length, 1, 'one emoji only');
-    assert.ok([...text].length <= 280);
+const ipswich = {
+  id: '11444', title: 'Arsenal v Ipswich Town', home: true, opponentCode: 'IPS', competition: 'Premier League',
+  kickoff: '2027-01-02T15:00', opens: '2026-11-06T12:00', closes: '2026-11-09T12:00',
+  priceRange: '£31.80 – £59.00', category: 'C', results: { Silver: '12 Nov', Red: '17 Nov' },
+};
+
+test('times read the way fans write them', () => {
+  assert.equal(friendly(at('2027-01-02T15:00Z')), 'Sat 2 Jan, 3pm');
+  assert.equal(friendly(at('2026-11-09T12:00Z')), 'Mon 9 Nov, 12pm');
+  assert.equal(friendly(at('2026-11-24T19:45Z')), 'Tue 24 Nov, 7:45pm');
+  assert.equal(friendly(at('2026-10-23T10:00Z')), 'Fri 23 Oct, 11am'); // BST
+  assert.equal(friendly(at('2026-11-07T00:00Z')), 'Sat 7 Nov, 12am');
+});
+
+test('open tweet: headline, then one fact per line, then hashtags', () => {
+  assert.equal(tweetText(ipswich, 'open'), [
+    '🚨 Ballot OPEN: Arsenal v Ipswich Town',
+    '',
+    '⏳ Closes Mon 9 Nov, 12pm',
+    '⚽ Sat 2 Jan, 3pm · Premier League',
+    '💷 £31.80–£59.00 · Category C',
+    '📬 Results: Silver 12 Nov · Red 17 Nov',
+    '',
+    '#ARSIPS #Arsenal #COYG',
+  ].join('\n'));
+});
+
+test('announced tweet leads with the opening time', () => {
+  assert.equal(tweetText(ipswich, 'announced'), [
+    '📢 Ballot dates are out: Arsenal v Ipswich Town',
+    '',
+    '🟢 Opens Fri 6 Nov, 12pm',
+    '⏳ Closes Mon 9 Nov, 12pm',
+    '⚽ Sat 2 Jan, 3pm · Premier League',
+    '💷 £31.80–£59.00 · Category C',
+    '📬 Results: Silver 12 Nov · Red 17 Nov',
+    '',
+    '#ARSIPS #Arsenal #COYG',
+  ].join('\n'));
+  assert.match(tweetText({ ...ipswich, opens: null }, 'announced'), /\n🟢 Opening date to be confirmed\n/);
+});
+
+test('last-chance tweet says "today" on the closing day and skips results', () => {
+  const text = tweetText(ipswich, 'closing', at('2026-11-09T01:00Z'));
+  assert.match(text, /^⏰ Last chance: Arsenal v Ipswich Town\n\n⏳ Ballot closes today, 12pm\n⚽ /);
+  assert.doesNotMatch(text, /Results/);
+  assert.match(tweetText(ipswich, 'closing', at('2026-11-08T23:30Z')), /closes Mon 9 Nov, 12pm/); // still Sunday in the UK
+});
+
+test('every tweet stays short, has no web address, and never duplicates another', () => {
+  const texts = ['announced', 'open', 'closing'].map((k) => tweetText(ipswich, k));
+  for (const t of texts) {
+    assert.ok([...t].length <= 280, t);
+    assert.doesNotMatch(t, /https?:|www\.|\.co\.uk|\.com|📅/);
   }
-  assert.doesNotMatch(tweetText(b, 'closing'), /Prices|Results/);
-  assert.match(message('open', b).message, /Prices £31\.80 – £59\.00\nResults: Silver 12 Nov · Red 17 Nov$/);
-  assert.doesNotMatch(tweetText(manUtd, 'open'), /Prices|Results/); // nothing found, nothing shown
+  assert.equal(new Set(texts).size, 3);
+  // Missing extras just drop their lines; away games put the home side first in the tag.
+  assert.doesNotMatch(tweetText(manUtd, 'open'), /💷|📬/);
+  assert.match(tweetText({ ...manUtd, home: false, title: 'Manchester United v Arsenal' }), /#MUNARS #Arsenal/);
+  assert.match(tweetText({ ...manUtd, opponentCode: null }), /\n\n#Arsenal #COYG$/);
 });
 
