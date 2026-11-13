@@ -49,7 +49,8 @@
     "11440": {
       "firstSeen": "2026-11-04",
       "sent": [
-        "announced"
+        "announced",
+        "open"
       ],
       "id": "11440",
       "title": "Arsenal v Brentford",
@@ -57,11 +58,11 @@
       "opponentCode": "BRE",
       "competition": "Premier League",
       "kickoff": "2027-01-05T19:30",
-      "status": "notAvailable",
+      "status": "open",
       "opens": "2026-11-13T12:00",
       "closes": "2026-11-16T12:00",
       "link": "https://www.eticketing.co.uk/arsenal/",
-      "phase": "upcoming"
+      "phase": "open"
     },
     "11444": {
       "firstSeen": "2026-10-30",
