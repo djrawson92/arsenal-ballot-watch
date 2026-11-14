@@ -1,21 +1,6 @@
 {
   "failStreak": 0,
   "ballots": {
-    "11412": {
-      "firstSeen": "2026-10-25",
-      "sent": [],
-      "id": "11412",
-      "title": "Arsenal v Hull City",
-      "kickoff": "2026-11-07T15:00",
-      "status": "closed",
-      "opens": "2026-09-18T11:00",
-      "closes": "2026-09-21T11:00",
-      "link": "https://www.eticketing.co.uk/arsenal/Events?preFilter=85&preFilterName=Ballot%20Registrations",
-      "phase": "closed",
-      "home": true,
-      "opponentCode": "HUL",
-      "competition": "Premier League"
-    },
     "11426": {
       "firstSeen": "2026-10-25",
       "sent": [],
