@@ -1,0 +1,7 @@
+/* Shared brand styles for the X profile images. Rendered to PNG with render.mjs. */
+@font-face { font-family: Oswald; font-weight: 600; src: url(fonts/oswald-latin-600-normal.woff2); }
+@font-face { font-family: Oswald; font-weight: 700; src: url(fonts/oswald-latin-700-normal.woff2); }
+@font-face { font-family: Inter; font-weight: 500; src: url(fonts/inter-latin-500-normal.woff2); }
+:root { --red: #C8102E; --red-dark: #8E0A1F; --navy: #0B1A33; --navy-2: #14294F; --white: #FFFFFF; --mist: #B9C5DB; }
+* { margin: 0; box-sizing: border-box; }
+html, body { background: transparent; }

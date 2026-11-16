@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="brand.css">
+<style>
+  body { width: 1500px; height: 500px; }
+  .banner { position: relative; width: 1500px; height: 500px; overflow: hidden;
+            background: linear-gradient(115deg, var(--navy) 0%, var(--navy-2) 100%); }
+  /* Slanted red panel on the right, with a thin white edge. */
+  .panel { position: absolute; top: 0; right: -120px; width: 440px; height: 500px; background: var(--red);
+           transform: skewX(-14deg); box-shadow: -10px 0 0 var(--white); }
+  .icon { position: absolute; right: 64px; top: 128px; width: 270px; transform: rotate(-8deg);
+          filter: drop-shadow(0 12px 20px rgba(0,0,0,.3)); }
+  /* Text block sits right of the profile photo, which covers the bottom-left on X. */
+  .text { position: absolute; left: 300px; top: 118px; }
+  .eyebrow { font: 600 40px/1 Oswald; letter-spacing: 14px; color: #FF4D63; }
+  .name { font: 700 118px/1 Oswald; color: var(--white); letter-spacing: 1px; margin-top: 12px; }
+  .strap { font: 500 30px/1 Inter; color: var(--mist); margin-top: 22px; }
+</style></head><body>
+  <div class="banner">
+    <div class="panel"></div>
+    <img class="icon" src="icon.svg" alt="">
+    <div class="text">
+      <div class="eyebrow">ARSENAL</div>
+      <div class="name">BALLOT ALERTS</div>
+      <div class="strap">Every ballot, the moment it opens.</div>
+    </div>
+  </div>
+</body></html>
