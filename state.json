@@ -133,6 +133,23 @@
       "home": true,
       "opponentCode": "RMA",
       "competition": "UEFA Champions League"
+    },
+    "11592": {
+      "firstSeen": "2026-11-23",
+      "sent": [
+        "announced"
+      ],
+      "id": "11592",
+      "title": "Arsenal v Sabah",
+      "home": true,
+      "opponentCode": null,
+      "competition": "UEFA Champions League",
+      "kickoff": "2027-01-27T20:00",
+      "status": "notAvailable",
+      "opens": "2026-12-04T12:00",
+      "closes": "2026-12-07T12:00",
+      "link": "https://www.eticketing.co.uk/arsenal/",
+      "phase": "upcoming"
     }
   },
   "seeded": true,
